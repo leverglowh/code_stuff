@@ -2,10 +2,10 @@
 
 Simple python 3 code examples about crawler.
 
-- [Simulate login process with *selenium*](#Simulate-log-in-process-with-*selenium*)
-- [Save cookies](#Save-cookies)
-- [Get a html page content with *requests* or *urllib.request*](#Get-a-html-page-content-with-*requests*-or-*urllib.request*)
-- [Extract useful information using *BeautifulSoup*](#Extract-useful-information-using-*BeautifulSoup*)
+- [Simulate login process with *selenium*](#simulate-login-process-with-*selenium*)
+- [Save cookies](#save-cookies)
+- [Get a html page content with *requests* or *urllib.request*](#get-a-html-page-content-with-*requests*-or-*urllib.request*)
+- [Extract useful information using *BeautifulSoup*](#extract-useful-information-using-*beautifulsoup*)
 
 ## Simulate login process with *selenium*
 
@@ -55,7 +55,7 @@ To find the correct xpath we'll have to use Safari's web inspector ( `⌥+⌘+I`
 [seleniumsite]: https://pypi.org/project/selenium/
 [appledevWebdriver]: https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari
 
-##Save cookies
+## Save cookies
 
 You can save cookies to a file:
 
@@ -97,7 +97,7 @@ for cookie in cookies:
 
 If you don't have to save cookies to file, just ignore lines about pickle.
 
-##Get a html page content with *requests* or *urllib.request*
+## Get a html page content with *requests* or *urllib.request*
 
 To process a html page using BeautifulSoup we'll need those information in type *bytes*.
 
@@ -132,7 +132,7 @@ req = requests.get(url)
 html = req.content #<class 'bytes'>
 ```
 
-##Extract useful information using *BeautifulSoup*
+## Extract useful information using *BeautifulSoup*
 
 ```python
 from bs4 import BeautifulSoup #obviously
