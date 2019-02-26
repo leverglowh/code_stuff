@@ -16,7 +16,7 @@ Simple python 3 code examples about crawler.
 pip3 install -U selenium
 ```
 
-From Selenium's website:
+From [Selenium's website][seleniumsite]:
 
 > Selenium requires a driver to interface with the chosen browser. Firefox, for example, requires [geckodriver](https://github.com/mozilla/geckodriver/releases), which needs to be installed before the below examples can be run. Make sure it’s in your PATH, e. g., place it in /usr/bin or /usr/local/bin.
 
@@ -54,4 +54,11 @@ driver.find_element_by_xpath('login-button-xpath').click()
 ```
 
 To find the correct xpath we'll have to use Safari's web inspector ( `⌥+⌘+I`)  Elements tab, navigate to the correct text box (where you input the username and password) and right click it, select `Copy->XPath` , it looks something like this: "`//*[@id="username"]`".
+
+
+
+
+
+[seleniumsite]: https://pypi.org/project/selenium/
+[appledevWebdriver]: https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari
 
