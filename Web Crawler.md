@@ -48,6 +48,9 @@ driver.find_element_by_xpath('captcha-text-box-xpath').send_keys(captcha)
 sleep(5) #may be optional idk
 
 driver.find_element_by_xpath('login-button-xpath').click()
+
+#When you're done, always quit the window.
+driver.quit()
 ```
 
 To find the correct xpath we'll have to use Safari's web inspector ( `⌥+⌘+I`)  Elements tab, navigate to the correct text box (where you input the username and password) and right click it, select `Copy->XPath` , it looks something like this: "`//*[@id="username"]`".
