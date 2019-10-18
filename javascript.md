@@ -31,6 +31,9 @@
   - [Using classes to create objects](#using-classes-to-create-objects)
   - [Subclasses and inheritance](#subclasses-and-inheritance)
   - [Static methods](#static-methods)
+- [Modules](#modules)
+	- [ES5](#es5)
+	- [ES6](#es6)
 
 ### Variables, functions and classes naming convention:
 
@@ -491,4 +494,124 @@ class Animal {
 }
 Animal.generateName //a / b / c
 ```
+
+### Modules:
+
+##### ES5:
+
+- Export the module (ES5):
+
+```javascript
+let Airplane = {
+    type: "StarJet",
+    showTyp: function () {
+        console.log(this.type);
+    }
+};
+
+module.exports = Airplane;
+```
+
+- Import it in another file (ES5):
+
+```javascript
+const Plane = require('./airplane.js') //import from file
+function showType() {
+    console.log(Plane.type);
+}
+showType(); //"StarJet"
+Plane.showTyp(); //"StarJet"
+```
+
+##### ES6:
+
+- export default:
+
+```javascript
+const Cat = {
+    name: 'Sachi',
+    isCute: true
+};
+export default Cat; //same as module.exports = Cat;
+```
+
+- import:
+
+```javascript
+import sachi from './cat'
+//sachi is now my variable for Cat module
+console.log(sachi.isCute); //true
+```
+
+- named export:
+
+```javascript
+let nameList = ['a', 'b', 'c'];
+let num = 4;
+
+export {nameList, num}; //export later
+
+export let keys = [1, 2, 3]; //export at once
+```
+- named export as:
+
+```javascript
+export {nameList as people, num as quota};
+```
+
+- named import:
+
+```javascript
+import {nameList, num} from './cat'
+console.log(nameList[0]); //'a'
+console.log(num); //4
+```
+
+- named import as:
+
+```javascript
+import {nameList as people} from './cat'
+import * as Cat from './cat';
+Cat.name; //'Sachi'
+```
+
+- Mixing these up:
+
+```javascript
+export let foods = '';
+function isVeg() {
+}; 
+function isLow() {
+}; 
+function isGFree() {
+};
+
+export {isVeg as veg};
+export default isGFree;
+```
+
+```javascript
+import {foods, isVeg} from './menu';
+import isGFree from './menu';
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
