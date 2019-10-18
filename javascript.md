@@ -2,17 +2,17 @@
 
 #### Table of Contents
 
-- [Variables and functions naming convention](#variables-and-functions-naming-convention)
+- [Variables/functions/classes naming convention](#variables-functions-and-classes-naming-convention)
 	- [False values](#false-values)
 - [Conditionals(if)](#conditionals)
 	- [Dynamic assigned value](#dynamic-assigned-value)
-	- [Ternary Operator](#ternary-operator)
+	- [Ternary operator](#ternary-operator)
 	- [Switch](#switch)
 - [Standard-output](#printing-stuff)
 - [Functions](#functions)
-	- [Anonymous Function](#function-expressions-anonymous-function)
+	- [Anonymous function](#function-expressions-anonymous-function)
 	- [Other function syntaxes](#other-function-syntaxes)
-	- [Default Parameters](#default-parameters)
+	- [Default parameters](#default-parameters)
 - [Array](#array)
 	- [Array methods](#array-methods)
 	- [Iterators](#iterators)
@@ -24,19 +24,31 @@
 	- [Accessing objects](#accessing)
 	- [Get a property in a var](#get-a-property-in-a-var)
 	- [Built-in objects](#built-in-objects)
-	- [Built-in Object methods](#built-in-object-methods)
+	- [Built-in object methods](#built-in-object-methods)
 	- [Looping through objects](#looping-through-objects)
 - [Factory functions](#factory-functions)
 - [Classes](#classes)
+  - [Using classes to create objects](#using-classes-to-create-objects)
+  - [Subclasses and inheritance](#subclasses-and-inheritance)
+  - [Static methods](#static-methods)
 
+### Variables, functions and classes naming convention:
 
-### Variables and functions naming convention:
+Variables and functions:
+
 - Start with a letter, underscore `_`, or dollar sign `$`.
+
 - I can use letter/numbers/underscores/dollar sign $.
-- I don't have to use camelCase and I can use car2go it's fine.
-  But it's preferred.
-- They are case sensitive.
-- When a var begins with `_` means it shouldn't be freely altered.
+
+- I don't have to use `camelCase` and I can use car2go it's fine. But camelCase is preferred.
+  
+- They are <u>case sensitive</u>.
+
+- When a var begins with `_` means it shouldn't be freely altered. (private)
+
+Classes:
+
+- `CamelCase`
 
 ##### False values:
 
@@ -104,7 +116,7 @@ function addNumbers(x, y){
 } //traditional function, no semicolon
 ```
 
-##### Function Expressions (anonymous function)
+##### Function expressions (anonymous function)
 I don't name the function, and I store it in a variable (commonly a `const`);
 ```javascript
 const calculateArea = function(width, height) {
@@ -165,7 +177,7 @@ var many_types = ["string", 123, true, ["array", "inside"]];
 
 breakfast[breakfast.length-1]; //access last element
 ```
-##### Array Methods:
+##### Array methods:
     - .length					//returns the length of the array
     - .concat(array a)			//returns a new array, with a concatenated
     - .pop()					//removes the last element
@@ -410,4 +422,73 @@ const factory = (id, isOk) => {
 
 ### Classes:
 
-WIP
+```javascript
+class Cat {
+    //special method that creates the object
+    constructor(name){
+        this._name = name; //these are the properties
+        this._favoriteFoods = [];
+    }
+    
+    get name(){
+        return this._name;
+    }
+    get favoriteFoods(){
+        return this._favoriteFoods; //!!! Reference is returned, may not be safe.
+    }
+    addFavoriteFood(food){
+        this._favoriteFoods.push(food);
+        return food;
+    }
+}
+```
+
+##### Using classes to create objects:
+
+```javascript
+class Cat { ... }
+let sachi = new Cat('Sachi'); //a new Cat object with name = 'Sachi'
+```
+
+##### Subclasses and inheritance:
+
+```javascript
+class Animal {
+    constructor(name){
+        this._name = name;
+        this._favoriteFoods = [];
+    }
+    get name(){}
+    get favoriteFoods(){}
+}
+
+class Cat extends Animal {
+    constructor(name, usesLitter){
+        super(name);
+        this._usesLitter = usesLitter;
+    }
+}
+let sachi = new Cat('Sachi', usesLitter);
+sachi.name //Sachi
+```
+
+##### Static methods:
+
+I use these if I have to call a method from the class itself and not from an object of the class.
+
+```javascript
+class Animal {
+    constructor(name){
+        this._name = name;
+        this._favoriteFoods = [];
+    }
+    get name(){}
+    get favoriteFoods(){}
+    static generateName () { //returns a random element from listNames list
+        const listNames = ['a', 'b', 'c'];
+        return listNames[Math.floor(Math.random()*listNames.length)];
+    }
+}
+Animal.generateName //a / b / c
+```
+
