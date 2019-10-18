@@ -3,19 +3,25 @@
 #### Table of Contents
 
 - [Variables/functions/classes naming convention](#variables-functions-and-classes-naming-convention)
+	
 	- [False values](#false-values)
+	
 - [Conditionals(if)](#conditionals)
 	- [Dynamic assigned value](#dynamic-assigned-value)
 	- [Ternary operator](#ternary-operator)
 	- [Switch](#switch)
+	
 - [Standard-output](#printing-stuff)
+
 - [Functions](#functions)
 	- [Anonymous function](#function-expressions-anonymous-function)
 	- [Other function syntaxes](#other-function-syntaxes)
 	- [Default parameters](#default-parameters)
+	
 - [Array](#array)
 	- [Array methods](#array-methods)
 	- [Iterators](#iterators)
+	
 - [Objects](#objects)
 	- [Properties](#properties)
 	- [Methods](#methods)
@@ -26,21 +32,29 @@
 	- [Built-in objects](#built-in-objects)
 	- [Built-in object methods](#built-in-object-methods)
 	- [Looping through objects](#looping-through-objects)
+	
 - [Factory functions](#factory-functions)
+
 - [Classes](#classes)
   - [Using classes to create objects](#using-classes-to-create-objects)
   - [Subclasses and inheritance](#subclasses-and-inheritance)
   - [Static methods](#static-methods)
+  
 - [Modules](#modules)
 	- [ES5](#es5)
 	- [ES6](#es6)
+	
 - [Promises](#promises)
   - [setTimeout](#settimeout)
   - [then](#then)
   - [catch](#catch)
   - [Chaining Promises](#chaining-promises)
   - [Promise.all()](#promiseall)
-
+  
+- [Async ... Await](#async-await)
+	- [async](#async)
+	- [await](#await)
+  
 ---
 
 ### Variables, functions and classes naming convention:
@@ -743,3 +757,30 @@ myPromises
     	console.log(errorMessage);
 	});
 ```
+
+### Async - Await:
+
+##### async:
+
+I use `async` keyword to write functions that handle asynchronous actions.
+`async` functions *always* return a `promise`: 
+
+1. The function returns nothing: promise with resolved value = undefined.
+2. The function returns a non-promise value: promise with resolved value = value.
+3. The function return a promise: promise.
+
+```javascript
+async function myFunc(){
+    //yadayadayada
+};
+
+const myFunc = async () => {
+    //yadayadayada
+};
+
+myFunc();
+```
+
+##### await:
+
+WIP
