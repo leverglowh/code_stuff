@@ -34,6 +34,14 @@
 - [Modules](#modules)
 	- [ES5](#es5)
 	- [ES6](#es6)
+- [Promises](#promises)
+  - [setTimeout](#settimeout)
+  - [then](#then)
+  - [catch](#catch)
+  - [Chaining Promises](#chaining-promises)
+  - [Promise.all()](#promiseall)
+
+---
 
 ### Variables, functions and classes naming convention:
 
@@ -595,23 +603,143 @@ import {foods, isVeg} from './menu';
 import isGFree from './menu';
 ```
 
+### Promises:
 
+Promises are special objects. When executed, the `pending` state (initial state) is changed to `resolved` or `rejected`.
 
+```javascript
+let isHappyDay = false;
+const someExecutor = (resolve, reject) => {
+    if (isHappyDay) {
+        resolve('Success message!');
+    } else {
+        reject('Reject message!');
+    };
+};
 
+let myPromise = new Promise(someExecutor); //Executes someExecutor
+console.log(myPromise); //'Reject message!'
+```
 
+##### setTimeout:
 
+`setTimeout(function, timeout)` waits at least `timeout` milliseconds, then executes the `function`.
 
+```javascript
+function printOne(){
+    console.log('1');
+};
+setTimeout(printOne, 2000);
+//After at least 2 seconds, '1' is printed
 
+const makePromise = () => {
+    return new Promise((resolve, reject) => {
+        setTimeout( () => {resolve('I will make a Promise!')}, 1000);
+    });
+};
+const promised = makePromise();
+```
 
+##### then:
 
+When a promise is settled, I can use `.then(onFulfilled, onRejected)`. The arguments are functions, handlers of the settled value.
 
+```javascript
+const myNumber = Math.random()*999999;
+let lottery = new Promise((resolve, reject) => {
+    let num = Math.random()*999999;
+    if (myNumber===num){
+        resolve("I'll buy everything.");
+    } else {
+        reject("Keep working!");
+    };
+});
 
+const handleWin = (winMessage) {
+    console.log(winMessage);
+    myNumber = Math.random()*999999;
+    playAgain();
+};
+const handleLost = (loseMessage) => console.log(loseMessage);
 
+lottery.then(handleWin, handleLost);
+```
 
+##### catch:
 
+This is the same thing as `then` except it accepts only one argument: `onRejected`. We can use `then` *and* `catch` to write clearer code:
 
+```javascript
+prom
+	.then((resolvedValue)=>{
+    	console.log(resolvedValue);
+	})
+	.catch((rejectionReason)=>{
+    	console.log(rejectionReason);
+	});
+```
 
+##### Chaining promises:
 
+I can chain multiple promises, using `then` in chain:
 
+```javascript
+let ok = true;
 
+const startWashing = (clothes) => { 
+    return new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+            ok? resolve(clothes) : reject('nope');
+        }, 500);
+    });
+}
+const startDrying = (clothes) => {
+    return new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+            ok? resolve(clothes) : reject('nooope');
+        }, 500);
+    });
+}
 
+const foldClothes = (clothes) => {
+	return new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+        	ok? resolve(clothes) : reject('nooooooooope');
+        }, 500);
+    });
+}
+
+function putOnClothes = (clothes) => {
+    console.log('Put those on!!!');
+};
+function burnEverything = (clothes) => {
+    console.log('I burnt everything :>');
+}
+//When everything should be done in order
+startWashing(myClothes) //returns a promise
+	.then((washedClothes) => {
+    	return startDrying(washedClothes);
+	})
+	.then((dryedClothes)=>{
+    	return foldClothes(dryedClothes);
+	})
+	.then(putOnClothes, burnEverything);
+```
+
+The variable `clothes` is *automatically passed on* through the chain if promises are successfully resolved, otherwise the error message is passed on. 
+
+##### Promise.all()
+
+`Promise.all([promise1, promise2])`
+I let all promises start together, if everything returns ok, `Promise.all()` returns an array of resolved values, otherwise returns the first reject reason and stops (*failing fast*).
+
+```javascript
+let myPromises = Promise.all([promise1, promise2]);
+myPromises
+	.then((arrayOfOks)=>{
+    	console.log(arrayOfOks);
+	})
+	.catch((errorMessage)=>{
+    	console.log(errorMessage);
+	});
+```
