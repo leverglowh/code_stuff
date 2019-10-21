@@ -58,7 +58,8 @@
 	- [try](#try)
 	- [catch](#catch)
 - [HTTP requests and AJAX](#http-requests-and-ajax)
-	- [Requests with ES6](#requests-with-es6)
+- [Requests with ES6: .fetch()](#requests-with-es6-fetch)
+- [ES8: requests with async ... await](#es8-requests-with-async--await)
 ---
 
 ### Variables, functions and classes naming convention:
@@ -871,6 +872,48 @@ xhr.setRequestHeader('apikey', apiKey);
 xhr.send(data); //send params here
 ```
 
-##### Requests with ES6
+### Requests with ES6: .fetch()
+It uses promises to handle requests; creates a request object with needed query, sends the request, returns the response as a promise.
+
+```javascript
+fetch('https://api-to-call.com/endpoint')
+  .then((response) => { //first then ok
+    if (response.ok){
+      return response.json();
+    }
+    throw new Error('Request failed!');
+  }, (networkError) => { //first then not-ok
+    console.log(networkError.message);
+  })
+  .then((jsonResponse) => { //second then
+    return jsonResponse;
+  });
+```
+
+```javascript
+const shortenUrl = () => {
+  const urlToShorten = inputField.value; //query
+  const data = JSON.stringify({destination: urlToShorten}); //post data
+  fetch(url, {method: 'POST', //specify post, headers and body
+              headers: {
+  				'Content-type': 'application/json',
+  				'apikey': apiKey
+			  },body: data})
+  .then((response)=>{
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error('Request failed!');
+  }, (networkError) => {
+    console.log(networkError.message);
+  })
+  .then((jsonResponse)=>{
+    renderResponse(jsonResponse);
+  })
+  
+}
+```
+
+### ES8: requests with async ... await
 
 WIP
