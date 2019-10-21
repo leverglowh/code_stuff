@@ -57,6 +57,8 @@
 - [try ... catch](#try--catch)
 	- [try](#try)
 	- [catch](#catch)
+- [HTTP requests and AJAX](#http-requests-and-ajax)
+	- [Requests with ES6](#requests-with-es6)
 ---
 
 ### Variables, functions and classes naming convention:
@@ -829,3 +831,46 @@ async function catchingErrors() {
 }
 ```
 
+### HTTP requests and AJAX
+
+AJAX or Asynchronous JavaScript and XML allows me to load a web page in an asynchronous way, ie. loading texts and images *together*.
+
+XMLHttpRequest (XHR) is the tool to accomplish requests.
+
+```javascript
+const xhr = new XMLHttpRequest();
+const url = 'https://api-to-call.com/endpoint';
+
+xhr.responseType = 'json'; //"" or arraybuffer or blob or document or json or text
+xhr.onreadystatechange = ( () => {
+  if (xhr.readyState === XMLHttpRequest.DONE) { //check if req is finisced
+	return xhr.response;
+  }
+});
+
+xhr.open('GET', url); //open request
+xhr.send(); //send request
+```
+
+```javascript
+const xhr = new XMLHttpRequest();
+const url = 'https://api-to-call.com/endpoint';
+
+const data = JSON.stringify({id: '200'}); //setting params
+xhr.responseType = 'json';
+
+xhr.onreadystatechange = ( () => {
+  if (xhr.readyState === XMLHttpRequest.DONE){
+    return xhr.response;
+  };
+});
+
+xhr.open('POST', url);
+xhr.setRequestHeader('Content-type', 'application/json');
+xhr.setRequestHeader('apikey', apiKey);
+xhr.send(data); //send params here
+```
+
+##### Requests with ES6
+
+WIP
