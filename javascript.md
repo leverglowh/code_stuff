@@ -51,10 +51,12 @@
   - [Chaining Promises](#chaining-promises)
   - [Promise.all()](#promiseall)
   
-- [Async ... Await](#async-await)
+- [async ... await](#async--await)
 	- [async](#async)
 	- [await](#await)
-  
+- [try ... catch](#try--catch)
+	- [try](#try)
+	- [catch](#catch)
 ---
 
 ### Variables, functions and classes naming convention:
@@ -758,7 +760,7 @@ myPromises
 	});
 ```
 
-### Async - Await:
+### async ... await:
 
 ##### async:
 
@@ -783,4 +785,47 @@ myFunc();
 
 ##### await:
 
-WIP
+It can only be used inside an `async` function; it is an operator, ***pauses the async function until a given promise is resolved*** and ***returns the resolved value***.
+
+```javascript
+const makePromise = () => {
+    return new Promise((resolve, reject) => {
+        setTimeout( () => {resolve('I will make a Promise!')}, 1000);
+    });
+};
+
+async function waitForPromise() {
+    let promised = await makePromise(); //waits for it to finish promising
+    console.log(promised); //'I will make a Promise!'
+}
+
+async function waitForAll() {
+    let promises = await Promise.all([makeOne(), makeTwo(), makeThree()]);
+}
+```
+
+If I don't put `await` in an `async` function, it can be executed *before we expected*, getting an unresolved promise in the "pending" state.
+
+It's nice if we add `await` to vars only the moment they're used and not when they're declared. In this way all the async functions start to run, and I wait only if I need to and only for the one I need.
+
+```javascript
+async function hello(){
+    let promised = makePromise();
+    console.log(await promised);
+}
+```
+
+### try ... catch:
+
+I use `try ... catch` to catch errors in `async ... await` functions.
+
+```javascript
+async function catchingErrors() {
+    try {
+    	let resolvedValue = await asyncFunction();
+    } catch (errorMessage) {
+        console.log(errorMessage)
+    }
+}
+```
+
