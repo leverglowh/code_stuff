@@ -17,6 +17,8 @@
 	- [Anonymous function](#function-expressions-anonymous-function)
 	- [Other function syntaxes](#other-function-syntaxes)
 	- [Default parameters](#default-parameters)
+	- [rest parameter](#rest-parameter)
+	- [Closures](#closures)
 	
 - [Array](#array)
 	- [Array methods](#array-methods)
@@ -199,6 +201,22 @@ function greeting(name = 'Stranger'){
 }
 ```
 
+##### Rest parameter:
+
+```javascript
+function avg(...args){
+    var sum = 0;
+    for (let value of args){
+        sum += value;
+    }
+    return sum/args.length;
+}
+```
+
+##### Closures:
+
+I create a closure whenever I ***declare a function inside another function***. The father function's variables stay alive (inaccessible to user) until the child function is not accessible anymore, because the child function often depends on these variables.
+
 ### Array:
 
 ```javascript
@@ -218,7 +236,21 @@ Index out of range: undefined.
 
 ##### Iterators:
 
-Methods that help me iterate over arrays.
+I can always iterate using the for keyword:
+
+```javascript
+for (let i = 0; i < arr.length; i++){
+    //Do something with arr[i]
+}
+```
+
+```javascript
+for (const currentValue of arr) {
+    //Do something with currentValue
+}
+```
+
+I can also use array's iterator methods that help me iterate over them:
 
 - `.forEach()` does something for each element. Returns undefined.
 
@@ -431,7 +463,7 @@ let letters = {
     b: 2,
     z: 26
 };
-for (let letter in letters) {
+for (let letter in letters) { //loops on properties
     console.log(letter); //a b c
     console.log(letters[letter]); //1 2 26
 };
