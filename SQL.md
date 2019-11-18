@@ -1,4 +1,4 @@
-SQL
+# SQL
 
 **S**tructured **Q**uery **L**anguage.
 
@@ -9,13 +9,14 @@ SQL
 - [Table managing](#table-managing)
   - [Type constrains](#type-constrains)
 - [Queries](#query)
-  - [WHERE](#where-operators)
-  - [ORDER BY](#order-by)
-  - [LIMIT](#limit)
-  - [CASE](#case)
+  - [`WHERE`](#where-operators)
+  - [`ORDER BY`](#order-by)
+  - [`LIMIT`](#limit)
+  - [`CASE`](#case)
 - [Aggregates](#aggregates)
   - [Computations](#computations)
-  - [GROUP BY](#group-by)
+  - [`GROUP BY`](#group-by)
+  - [`HAVING`](#having)
 - [Postgres data types](#postgres-data-types)
 
 ---
