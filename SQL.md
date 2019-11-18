@@ -2,6 +2,21 @@
 
 **S**tructured **Q**uery **L**anguage.
 
+---
+
+#### Table of Contents
+
+- [Table managing](#table-managing)
+  - [Type constrains](#type-constrains)
+- [Queries](#query)
+  - [WHERE](#where-operators)
+  - [ORDER BY](#order-by)
+  - [LIMIT](#limit)
+  - [CASE](#case)
+- [Postgres data types](#postgres-data-types)
+
+---
+
 ### Table managing
 
 ```sql
@@ -33,24 +48,96 @@ DELETE FROM table_name
 WHERE column_3 IS NULL;
 ```
 
-##### Constraints
+##### Type constraints
 
 - `PRIMARY KEY`
 - `UNIQUE`
 - `NOT NULL`
 - `DEFAULT 'Default value'`
 
-
+---
 
 ### Query
 
 ```sql
 SELECT * FROM users;
+/* Show everything from the table */
 ```
 
 ```sql
-SELECT (column_1, column_3) FROM table_name;
+SELECT column_1, column_3 FROM table_name;
+/* Show only column 1 and 3 of the table */
 ```
+
+```sql
+SELECT column_1 AS 'alternate_column_name' FROM table_name; 
+/* Rename column 1 only in the results */
+```
+
+```sql
+SELECT DISTINCT column_2, column_1 FROM table_name;
+/* Do not show duplicates of the pair */
+```
+
+```sql
+SELECT column_1, column_2 FROM table_name WHERE column_3 = true;
+/* Show only column 1 and 2, where 3 is true */
+```
+
+##### `WHERE` operators
+
+```sql
+SELECT * FROM table_name WHERE column_1 = 5;
+```
+
+- `=` equal to
+- `!=` not equal to
+- `>` greater than
+- `<` less than
+- `>=` greater than or equal to
+- `<=` less than or equal to
+- `LIKE`:  *<u>NOT</u>* case sensitive
+  - `WHERE name LIKE 'He_lo'` selects everyone whose name starts with `He` and ends with `lo`, and has exactly *one* character in between
+  - `WHERE name LIKE 'H%'` selects everyone whose name starts with `A` with anything at the tail.. (*A*, *Abc*, *A5636* are all accepted) [`A%`, `%a`, `%dada%`]
+- `IS NULL`/`IS NOT NULL`
+- `BETWEEN`: *<u>IS</u>* case sensitive
+  - `WHERE age BETWEEN 13 AND 19` selects all teenagers
+  - `WHERE name BETWEEN 'A' AND 'D'` selects all names from 'A' to, *including* 'D'.. (*Ab*, *Bc*, *Cd*, *Cz*, *D* are all accepted, *Da* isn't)
+- `AND`: combining multiple  `WHERE`s
+  - `WHERE name LIKE 'A%' AND age > 19`
+- `OR`
+
+##### `ORDER BY`
+
+```sql
+SELECT * FROM table_name ORDER BY column_1 ASC;
+```
+
+- `ASC`: ascending order
+- `DESC`: descending order
+
+##### `LIMIT`
+
+```sql
+SELECT * FROM table_name LIMIT 10; /* Show only 10 rows */
+```
+
+##### `CASE`
+
+SQL way of `if..else`.. or `switch`..
+
+```sql
+SELECT column_2,
+  CASE
+  	WHEN column_1 > 18 THEN 'adult'
+  	WHEN column_1 > 13 THEN 'teenager'
+  	ELSE 'kid'
+  END AS 'Role'
+ FROM table_name;
+ /* The second column (Role) is either 'adult' or 'teenager' or 'kid' */
+```
+
+---
 
 ##### Postgres data types
 
