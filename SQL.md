@@ -1,4 +1,4 @@
-## SQL
+SQL
 
 **S**tructured **Q**uery **L**anguage.
 
@@ -13,6 +13,9 @@
   - [ORDER BY](#order-by)
   - [LIMIT](#limit)
   - [CASE](#case)
+- [Aggregates](#aggregates)
+  - [Computations](#computations)
+  - [GROUP BY](#group-by)
 - [Postgres data types](#postgres-data-types)
 
 ---
@@ -135,6 +138,75 @@ SELECT column_2,
   END AS 'Role'
  FROM table_name;
  /* The second column (Role) is either 'adult' or 'teenager' or 'kid' */
+```
+
+---
+
+### Aggregates
+
+##### Computations
+
+- `COUNT()`: n -> 1
+
+```sql
+SELECT COUNT(*) FROM table_name; /* Counts how many rows are there */
+```
+
+- `SUM()`: n -> 1
+
+```sql
+SELECT SUM(column_2) FROM table_name;
+/* Shows 1 value: sum of all column_2 values */
+```
+
+- `MAX()`/`MIN()`: n -> 1
+
+```sql
+SELECT MAX(column_2) FROM table_name;
+/* Shows 1 value: the biggest value in the column_2 */
+```
+
+```sql
+SELECT column_1 FROM table_name 
+WHERE column_2 = (SELECT MAX(column_2) FROM table_name);
+/* Shows the column 1 value that has the maximum column 2 value */
+```
+
+- `AVG()`: n -> 1
+
+```sql
+SELECT AVG(column_2) FROM table_name;
+/* Shows 1 value: the average value of the column 2 */
+```
+
+- `ROUND()`: n -> n
+
+```sql
+SELECT column_1, ROUND(column_2, 2) FROM table_name;
+/* Shows 2 columns, the second column values are rounded to 2 decimal places */
+```
+
+##### `GROUP BY`
+
+```sql
+SELECT column_1, COUNT(*) FROM table_name GROUP BY column_1;
+/* Returs 2 columns: first one shows distinct column 1 values, the second one counts how many rows are there for every distinct column 1 value (how many times the value is repeated) */
+```
+
+```sql
+SELECT column_1, column_2, COUNT(*) FROM table_name
+GROUP BY 2 ORDER BY 1,2;
+/* Notice that I can reference columns by their position in the query */
+```
+
+##### `HAVING`
+
+Used to filter aggregated properties.
+
+```sql
+SELECT column_1, column_2, COUNT(column_3) FROM table_name
+GROUP BY 1, 2
+HAVING COUNT(column_3) > 5;
 ```
 
 ---
