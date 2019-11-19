@@ -191,7 +191,7 @@ SELECT column_1, ROUND(column_2, 2) FROM table_name;
 
 ```sql
 SELECT column_1, COUNT(*) FROM table_name GROUP BY column_1;
-/* Returs 2 columns: first one shows distinct column 1 values, the second one counts how many rows are there for every distinct column 1 value (how many times the value is repeated) */
+/* Returns 2 columns: first one shows distinct column 1 values, the second one counts how many rows are there for every distinct column 1 value (how many times the value is repeated) */
 ```
 
 ```sql
@@ -208,6 +208,98 @@ Used to filter aggregated properties.
 SELECT column_1, column_2, COUNT(column_3) FROM table_name
 GROUP BY 1, 2
 HAVING COUNT(column_3) > 5;
+```
+
+---
+
+### Multiple tables
+
+##### KEYS
+
+`PRIMARY KEY`
+
+Special column that uniquely identifies its rows, it:
+
+- Can't be `NULL`
+- Must be *unique*
+- There mustn't be more than *one* `PRIMARY KEY` column in a table
+
+It is declared when the table is created:
+
+```sql
+CREATE TABLE table_name (
+	column_1 INT PRIMARY KEY
+);
+```
+
+`FOREIGN KEY`
+
+When a column in *table_1* is the `PRIMARY KEY` of another table, it is called `FOREIGN KEY` in *table_1*.
+
+Usually I make `JOIN`s between the `PRIMARY KEY` of one table and the `FOREIGN KEY` of the other.
+
+##### `..JOIN..ON..`
+
+Links two tables, having the same *common_column*, only the rows that matches *`common_column = column`*.
+
+```sql
+SELECT table_1.column, table_2.otherColumn
+FROM table_1 JOIN table_2 
+ON table_1.common_column = table_2.column;
+```
+
+##### `..LEFT JOIN..ON..`
+
+Links two tables, having a common column, but keeping the left table rows if *`common_column = column`*  isn't verified and deletes the right table rows.
+
+```sql
+SELECT *
+FROM table_1 LEFT JOIN table_2
+ON table_1.common_column = table_2.column;
+```
+
+##### `CROSS JOIN`
+
+Joins two tables, with all the possible combinations.
+
+```sql
+SELECT *
+FROM table_1 CROSS JOIN table_2;
+```
+
+Usually it's used  when we need to compare each row of a table to a list of values .
+
+```sql
+SELECT month, COUNT(*)
+FROM newspaper CROSS JOIN months
+WHERE start_month <= month AND end_month >= month
+GROUP BY month;
+```
+
+ How many users were subscribed during each month of the year. 
+
+##### `UNION`
+
+I use it between two `SELECT`s, when I have two `SELECT` results with the same columns, I can unite them and have a common result.
+
+```sql
+SELECT * FROM table_1 
+UNION
+SELECT * FROM table_2;
+```
+
+##### `WITH`
+
+When I have to use the results of a `SELECT` to make a further query:
+
+```sql
+WITH previous_results AS (
+	SELECT ...
+    ...
+)
+SELECT * 
+FROM previous_results JOIN table_2 
+ON res_column = table_2.column;
 ```
 
 ---
