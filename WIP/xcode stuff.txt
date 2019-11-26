@@ -1,0 +1,31 @@
+Xcode stuff
+
+- ⌘+r	//run
+- ⌘+.	//stop
+
+- ⌘+0 	//left pane
+- ⌘+⌥+0	//right pane
+- ⌘+1÷x	//tabs inside pane
+
+- ⌘+⇧+o	//open (file)
+- ⌘+⇧+y	//open console and debugger
+
+- ⌘+i	//indent (to smartly indent)
+- ⌘+⇥	//indent + 1
+
+- ⌘+/	//comment block
+- ⌘+/	//un-comment block
+
+- ⌘+⌥+⏎	//open assistant editor
+- ⌘+⏎	//close assistant editor
+
+- Inside console:
+	- po game //print out object "game"
+	- p game //print out game
+Use marks:
+//MARK: this spot
+
+Simulator:
+- ⌘+arrows	//rotate
+
+

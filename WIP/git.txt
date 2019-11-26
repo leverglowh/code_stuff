@@ -1,0 +1,66 @@
+Git commands
+- cd <cartella>
+- git init #initialize git directory
+- git add <file>
+- git commit <file> -m "comment"
+- git status
+- git diff <file> #show difference btw repository and work tree
+- git log
+- git log --pretty=oneline
+- git reset --hard HEAD^ #go back one line
+- git reset --hard HEAD~n #go back n lines
+- git reset --hard xxxxx #go back to xxxxx
+- git reset HEAD <file> #unstage, eliminate file on stage
+- git checkout -- <file> #discharge changes file on work tree
+- git rm <file> #remove file from repo, needs commit
+- git rm -r --cached <folder> #remove file from git but keeps it in local
+- git checkout HEAD -- <file> #restore file deleted but not committed
+- git reflog #show command history
+
+- git checkout -b branchname #create branch dev and switch
+- git branch branchname #create new branch
+- git checkout branchname #switch to branch
+- git branch #check branches
+- git merge (--no-ff) (-m "comment") branchname 
+- git branch -d branchname #delete branch
+- git branch -D branchname #delete unmerged branch
+- git log --graph --pretty=oneline --abbrev-commit 
+
+- git stash #save working tree
+- git stash list
+- git stash pop #apply and delete stash
+- git stash apply #doesnt delete stash, applies last stash
+- git stash drop #delete stash
+- git stash apply stash@{x} #applies stash x
+- git stash drop stash@{x} #delete stash x
+
+- git remote add origin git@github.com:leverglowh/reponame.git
+- git remote (-v) #show remote git info
+- git push -u origin master #first push
+- git push origin master
+- git push origin branchname
+- git pull
+- git clone git@github.com:leverglowh/gitname.git
+- git checkout -b branchname origin/branchname
+- git branch --set-upstream branchname origin/branchname #link local branch to server branch
+
+- git tag tagname #tags current branch with tagname
+- git tag tagname commitid
+- git tag -a v0.1 -m "comment" commitid
+- git tag #show tags
+- git tag -d tagname #delete tag
+- git show tagname
+- git push origin tagname
+- git push origin --tags #push all tags
+- git push origin :refs/tags/tagname #delete tag on origin
+
+- .gitignore #file: list of files my repo ignores
+- git add -f <file> #add an ignored file to stage
+- git check-ignore -v <filename> #check if file is ignored and where
+
+- git config --global alias.x xxxx #set an alias
+
+cat .git/config #get config specs on current repo
+cat .gitconfig #get config specs on xeverglow
+
+lg is alias of git log prettyecc

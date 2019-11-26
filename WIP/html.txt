@@ -1,0 +1,73 @@
+HTML
+
+Tags:
+<!DOCTYPE html>		#Declaration
+<HTML></HTML>		#HTML
+<head></head>		#Head
+<title></title>		#Title - Head
+<body></body>		#Body
+<div></div> 		#One block of content
+<span></span>		#Inline styling
+<p></p>			#Paragraph
+<br>			#New Line
+<h1></h1>		#1-6 types
+<em></em>		#Italic
+<strong></strong>	#Bold
+<ul></ul>		#Unordered list
+<ol></ol>		#Ordered list
+<li></li>		#List item - List
+<img src="url.jpg" />	#Image
+<video></video>		#Video
+<a href="url">Link</a>	#Anchor (Link)
+<table></table>		#Table
+<tr></tr>		#Row - Table
+<td></td>		#Data - Table
+<thead></thead>		#Table Head
+<tbody></tbody>		#Table Body
+<tfoot></tfoot>		#Table Foot
+
+Attributes:
+
+Table Heading:
+-scope: row/col. 
+
+Table Data:
+-colspan: how many cells (horizontally) occupies
+-rowspan: how may cells (vertically) occupies
+
+Anchor:
+-href: relative/absolute/id. (./a.html)/(aaa.com)/(#top)
+-target: _self, _blank, _parent, _top. #_blank opens a new tab
+
+Other:
+-id: idName
+
+Image Link:
+<a href="url">
+  <img src="url.jpg" alt="text" /> 		#Inglobo una immagine in <a></a>
+</a>
+
+Media:
+<img src="url.jpg" alt="Alternative text" />
+<video src="url.mp4" width="320" height="240" controls> Video not supported </video>
+
+Forms:
+<form action="/example.html" method="POST">
+    <h1>Form title</h1>
+    <p>Form text</p>
+    <label for="usr_id">What's your username?</label>
+    <input type="text" name="first-text-field" id="usr_id" value="default">
+    <input type="number" step="1"> #step increases 1 by clicking on arrow
+    <input type="range" min="0" max="100" step="1">
+    <input type="checkbox" value="extra_cheese">
+</form>
+
+-type: text, password, number, range(slider), checkbox, radio
+
+Dropdown list:
+<label for="cat_or_dog">Are you a dog or a cat person?</label>
+<select id="cat_or_dog" name="lunch">
+    <option value="cat">Cat</option>
+    <option value="dog">Dog</option>
+</select>
+
