@@ -9,7 +9,7 @@ File: `AndroidManifest.xml`
 ```xml
 <activity
 	android:name=".ReadActivity"
-    android:parentActivityName=".MainActivity" <!--set parent-->
+    android:parentActivityName=".MainActivity"
     />
 ```
 
@@ -77,3 +77,28 @@ File: `AndroidManifest.xml`
 </RelativeLayout>
 ```
 
+## Designing stuff
+
+### `ScrollView`
+
+```xml
+<ScrollView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="5sp"
+        android:padding="@dimen/padding_regular"
+        android:text="@string/sample_text" />
+</ScrollView>
+```
+
+In this example, TextView is scrollable.
+
+### `autoLink`
+
+Automatically make links clickable.
+
+`android:autoLink="web"` goes inside `TextView` as a property.
