@@ -1,6 +1,6 @@
 # Android JAVA
 
-## Activity hierarchy
+## Activity
 
 File: `AndroidManifest.xml`
 
@@ -21,6 +21,26 @@ File: `AndroidManifest.xml`
     android:theme="@style/Theme.AppCompat.NoActionBar"
     />
 ```
+
+- Change application name
+
+Note that if `android:lable` is present as `<application />`'s prop, then this won't work. [ERROR]
+
+```xml
+<activity
+    android:name=".ReadActivity"
+    android:lable="This header name"
+    />
+```
+
+
+
+## Intent
+
+- Explicit intent:  when I know the target.
+- Implicit intend: I don't have the name of the target, but I have my orders.
+
+
 
 ## Layout
 
@@ -102,3 +122,9 @@ In this example, TextView is scrollable.
 Automatically make links clickable.
 
 `android:autoLink="web"` goes inside `TextView` as a property.
+
+---
+
+- `setTitle("New Title");` changes the current application title.
+
+- `finish();` ends the activity life, when  `←` is pressed this activity won't be shown.
