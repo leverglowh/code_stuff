@@ -298,6 +298,64 @@ Find all input types [in the documentation](https://developer.android.com/refere
     android:hint="Enter a website address"/>
 ```
 
+### TextView
+
+Make text selectable: `android:textIsSelectable="true"`
+
+## Options menu
+
+Create a folder as `res/menu/` and a file `menu.xml` inside it.
+
+To show *some* of the menu items as icon at the `appbar` add the line `app:showAsAction="ifRoom"` as a prop.
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mail"
+        android:icon="@android:drawable/sym_action_email"
+        android:title="Send a mail" />
+    <item
+        android:id="@+id/upload"
+        android:icon="@android:drawable/ic_dialog_alert"
+        android:title="Attention!" />
+</menu>
+```
+
+To show the `appbar` in the designated `Activity` insert the method:
+
+```java
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+	MenuInflater menuInflater = getMenuInflater();
+    menuInflater.inflate(R.menu.menu, menu);
+    return true;
+}
+```
+
+And to specify what every command does:
+
+```java
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+    Toast.makeText(this, "something", Toast.LENGTH_SHORT).show();
+    // Check menu item's id to determine the clicked item
+    switch (item.getItemId()) {
+        case R.id.mail:
+            // do something
+            return true;
+        case R.id.upload:
+            // do something
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+    }
+}
+```
+
+
+
 ---
 
 ## Default methods
@@ -310,9 +368,8 @@ Find all input types [in the documentation](https://developer.android.com/refere
 
 - `TextView.setBackgroundColor(Color.RED)` sets the background color of the TV.
 
-- `EditText.setInputType(`
+- `EditText.setInputType`
 
-  ​	`InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_FLAG_MULTI_LINE);`
+  ​	`(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_FLAG_MULTI_LINE);`
 
 - 
-
