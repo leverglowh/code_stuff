@@ -1,5 +1,7 @@
 # Android JAVA
 
+> `R.java` file contains the link between XML and Java page.
+
 ## Activity
 
 File: `AndroidManifest.xml`
@@ -111,16 +113,95 @@ if (savedInstanceState != null) {
 }
 ```
 
-
-
 ## Intent
 
 I use `intent` to communicate between activities, passing data and/or open a new activity.
 
 - **Explicit intent**:  when I know the target.
+
+```java
+/* Creating and sending intent */
+Intent intent = new Intent(this, ActivityToOpen.class);
+String message = "ciao";
+intent.putExtra("extra_key", message);
+startActivity(intent); //open the target activity
+```
+
+```java
+/* Receiving intent */
+Intent intent = getIntent();
+String message = intent.getStringExtra("extra_key");
+// Do something with it
+```
+
 - **Implicit intent**: I don't have the name of the target, but I have my orders.
 
+  - *Open a **URL** in a web browser*
 
+  ```java
+  String url = siteAddr.getText().toString();
+  if (!url.startsWith("http://") && !url.startsWith("https://")) 
+      url = "http://" + url;
+  Uri webpage = Uri.parse(url);
+  ```
+
+  - *Open a location on a **map***
+
+  ```java
+  String loc = mapAddr.getText().toString();
+  Uri addressUri = Uri.parse("geo:0,0?q=" + loc);
+  ```
+
+  - *Share **text***
+
+  ```java
+  String txt = textToshare.getText().toString();
+  String mimeType = "text/plain";
+  ShareCompat.IntentBuilder
+  	.from(this)
+      .setType(mimeType)
+      .setChooserTitle("Share this text with")
+      .setText(txt)
+      .startChooser();
+  // Skip actions below
+  ```
+
+  - *[...]*
+
+Intent action types:
+
+`Intent.ACTION_VIEW` 						`Intent.ACTION_EDIT` 					`Intent.ACTION_DIAL`
+
+```java
+/* Creating and sending intent */
+Intent intent = new Intent(Intent.ACTION_VIEW, dataToTransmit);
+if (intent.resolveActivity(getPackageManager()) != null) {
+    /* At least one app is able to handle my intent */
+    startActivity(intent);
+} else {
+    /* No app is able to handle my intent */
+   Log.d("ImplicitIntents", "Can't handle this!");
+} 
+```
+
+### Receive implicit intent
+
+I'll have to define an `Intent` filter in `AndroidManifest.xml` to define the type of implicit `Intent` I want to handle.
+
+```xml
+<activity android:name=".ImplicitIntent">
+	<intent-filter>
+     	<!-- Action type VIEW -->
+   		<action android:name="android.intent.action.VIEW" />
+        <!-- Accept implicit intent [IMPORTANT] -->
+        <category android:name="android.intent.category.DEFAULT" />
+        <!-- Accept browsable category intent -->
+        <category android:name="android.intent.category.BROWSABLE" />
+        <!-- Take in only url with http scheme and google.it host -->
+        <data android:scheme="http" android:host="google.it" />
+    </intent-filter>
+</activity>
+```
 
 ## Layout
 
@@ -203,6 +284,20 @@ Automatically make links click-able.
 
 `android:autoLink="web"` goes inside `TextView` as a property.
 
+### EditText
+
+I can set multiple `inputType`s by appending `|newType`.
+Find all input types [in the documentation](https://developer.android.com/reference/android/widget/TextView.html#attr_android:inputType).
+
+```xml
+<EditText
+	android:id="@+id/editTextid"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:inputType="textCapSentences|textMultiLine"
+    android:hint="Enter a website address"/>
+```
+
 ---
 
 ## Default methods
@@ -210,3 +305,14 @@ Automatically make links click-able.
 - `setTitle("New Title");` changes the current application title.
 
 - `finish();` ends the activity life, when  `←` is pressed this activity won't be shown.
+
+- `TextView.setTextColor(Color.RED)` sets the text color of the *TextView* as red.
+
+- `TextView.setBackgroundColor(Color.RED)` sets the background color of the TV.
+
+- `EditText.setInputType(`
+
+  ​	`InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_FLAG_MULTI_LINE);`
+
+- 
+
