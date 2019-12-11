@@ -17,8 +17,9 @@
     - [Intent action types](#intent-action-types)
     - [Receive implicit intent](#receive-implicit-intent)
 - [Layout](#layout)
-  - [Linear Layout](#--linearlayout)
-  - [Relative Layout](#--relativelayout)
+  - [`LinearLayout`](#--linearlayout)
+  - [`RelativeLayout`](#--relativelayout)
+  - [`TabLayout`](#--tablayout)
 - [Designing stuff](#designing-stuff)
   - [`ScrollView`](#scrollview)
   - [EditText](#edittext)
@@ -287,6 +288,114 @@ I'll have to define an `Intent` filter in `AndroidManifest.xml` to define the ty
         android:layout_centerHorizontal="true"
         />
 </RelativeLayout>
+```
+
+### - `TabLayout`
+
+- Add implementation of the library in `build.gradle (Module.app)`:
+
+```java
+implementation 'com.google.android.material:material:1.0.0'
+```
+
+- Add `TabLayout` and `ViewPager` in the *design xml*:
+
+```xml
+<com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+<androidx.viewpager.widget.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/tab_layout"/>
+```
+
+- Create as many `fragment (blank)` as the number of tabs you want to implement. Allowing `Create layout XML?`.
+- For every `XML` use `RelativeLayout` and inside it it's the content of the current tab.
+- Add a new *JAVA class* `PagerAdapter` inside the current package.
+- Extend it from (calling `superclass`) `FragmentStatePagerAdapter`.
+
+```java
+public class PagerAdapter extends FragmentStatePagerAdapter {}
+```
+
+- Implement the default `constructor` with an additional parameter: `int numOfTabs`:
+
+ ```java
+public class PagerAdapter extends FragmentStatePagerAdapter {
+	int numOfTabs;
+    
+    public PagerAdapter(FragmentManager fm, int NumOfTabs) {
+        super(fm);
+        this.numOfTabs = NumOfTabs;
+    }
+}
+ ```
+
+- Implement, overriding, the method `GetItem()` with a switch case:
+
+```java
+@Override
+public Fragment getItem(int position) {
+        switch (position) {
+            case 0: return new TabFragment1();
+            case 1: return new TabFragment2();
+            case 2: return new TabFragment3();
+            default: return null;
+        }
+}
+```
+
+- Implement, overriding, the method `GetCount()` to return the number of tabs:
+
+```java
+@Override
+public int getCount() {
+        return numOfTabs;
+}
+```
+
+- Inside the `onCreate()` method of the *activity* implement the `TabLayout`:
+
+```java
+// Create an instance of the tab layout from the view.
+TabLayout tabLayout = findViewById(R.id.tab_layout);
+// Set the text for each tab.
+tabLayout.addTab(tabLayout.newTab().setText("TAB TITLE 1"));
+tabLayout.addTab(tabLayout.newTab().setText("TAB TITLE 2"));
+tabLayout.addTab(tabLayout.newTab().setText("TAB TITLE 3"));
+// Set the tabs to fill the entire layout.
+tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+// Use PagerAdapter to manage page views in fragments.
+// Each page is represented by its own fragment.
+final ViewPager viewPager = findViewById(R.id.pager);
+final PagerAdapter adapter = new PagerAdapter
+                (getSupportFragmentManager(), tabLayout.getTabCount());
+viewPager.setAdapter(adapter);
+// Setting a listener for clicks.
+viewPager.addOnPageChangeListener
+        	(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+tabLayout.addOnTabSelectedListener
+    (new TabLayout.OnTabSelectedListener() {
+     @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+         viewPager.setCurrentItem(tab.getPosition());
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {}
+
+       @Override
+        public void onTabReselected(TabLayout.Tab tab) {}
+    });
+}
 ```
 
 ## Designing stuff
