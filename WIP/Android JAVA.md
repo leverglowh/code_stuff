@@ -354,7 +354,34 @@ public boolean onOptionsItemSelected(MenuItem item) {
 }
 ```
 
+## Alerts
 
+The main idea is:
+create a builder -> set a title -> set a message -> set buttons.
+The second argument of the button setter is the `onClickHandler` of the button.
+
+```java
+AlertDialog.Builder myAlertBuilder = new AlertDialog.Builder(MainActivity.this);
+myAlertBuilder.setTitle("Are you sure you want to open this?");
+myAlertBuilder.setMessage("Click OK to continue, or Cancel to stop:");
+
+myAlertBuilder.setPositiveButton("OK",
+	new DialogInterface.OnClickListener() {
+    	public void onClick(DialogInterface dialog, int which) {
+        	// User clicked OK button. Do something.
+            
+        }
+    });
+
+myAlertBuilder.setNegativeButton("Cancel",
+	new DialogInterface.OnClickListener() {
+    	public void onClick(DialogInterface dialog, int which) {
+        	// User cancelled the dialog. Do something.
+        }
+});
+
+myAlertBuilder.show();
+```
 
 ---
 
@@ -372,4 +399,3 @@ public boolean onOptionsItemSelected(MenuItem item) {
 
   ​	`(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_FLAG_MULTI_LINE);`
 
-- 
