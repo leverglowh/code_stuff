@@ -26,6 +26,8 @@
   - [`TextView`](#textview)
 - [Options menu](#options-menu)
 - [Alerts](#alerts)
+- [Fragments](#fragments)
+  - [Date Picker](#date-picker-fragment)
 
 ## Activities
 
@@ -412,6 +414,63 @@ myAlertBuilder.setNegativeButton("Cancel",
 });
 
 myAlertBuilder.show();
+```
+
+## Fragments
+
+### Date Picker Fragment
+
+- Create a new blank fragment:
+
+```java
+public class DatePickerFragment extends DialogFragment 
+   						implements DatePickerDialog.OnDateSetListener {
+	// Dialog constructor with default values
+    @NonNull
+	@Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    	// Use the current date as the default date in the picker.
+    	final Calendar c = Calendar.getInstance();
+    	int year = c.get(Calendar.YEAR);
+    	int month = c.get(Calendar.MONTH);
+    	int day = c.get(Calendar.DAY_OF_MONTH);
+        // Create a new instance of DatePickerDialog and return it.
+        return new DatePickerDialog(getActivity(), this, year, month, day);
+    }
+  
+    // When a date is chosen, do the following
+	@Override
+    public void onDateSet
+        		(DatePicker view, int year, int month, int dayOfMonth) {
+        
+        // Create an instance of the father activity
+    	DatePickerActivity datePicker = (DatePickerActivity) getActivity();
+        
+        // Call the father's method
+        datePicker.processDatePickerResult(year, month, dayOfMonth);
+        
+      }
+  }
+```
+
+- Add methods in the father activity to *show the fragment* and *do something with it*:
+
+```java
+public void showDatePicker(View view) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getSupportFragmentManager(),"datePicker");
+}
+
+public void processDatePickerResult(int year, int month, int day) {
+        String month_string = Integer.toString(month+1);
+        String day_string = Integer.toString(day);
+        String year_string = Integer.toString(year);
+        String dateMessage = 
+            (day_string + "/" + month_string + "/" + year_string);
+    	// Show the date in a TextView
+        TextView tw = findViewById(R.id.textView4);
+        tw.setText(dateMessage);
+    }
 ```
 
 ---
