@@ -20,7 +20,6 @@
   - [Linear Layout](#--linearlayout)
   - [Relative Layout](#--relativelayout)
 - [Designing stuff](#designing-stuff)
-  - [`autoLink`](#autolink)
   - [`ScrollView`](#scrollview)
   - [EditText](#edittext)
   - [`TextView`](#textview)
@@ -53,13 +52,12 @@ File: `AndroidManifest.xml`
 
 - Change application name
 
-*Note* that if `android:lable` is present as `<application />`'s prop, then this won't work. [ERROR]
-*Note* also that the `android:label` of the `MainActivity` gets synced as the name of the app.
+*Note* that the `android:label` of the `MainActivity` gets synced as the name of the app, when it is specified as an `<application />` prop, it syncs brutally to the `MainActivity`.
 
 ```xml
 <activity
     android:name=".ReadActivity"
-    android:lable="This header name"
+    android:lable="You can read here"
     />
 ```
 
@@ -293,12 +291,6 @@ I'll have to define an `Intent` filter in `AndroidManifest.xml` to define the ty
 
 ## Designing stuff
 
-### `autoLink`
-
-Automatically make links click-able.
-
-`android:autoLink="web"` goes inside `TextView` as a property.
-
 ### `ScrollView`
 
 ```xml
@@ -331,9 +323,10 @@ Find all input types [in the documentation](https://developer.android.com/refere
     android:hint="Enter a website address"/>
 ```
 
-### TextView
+### `TextView`
 
-Make text selectable: `android:textIsSelectable="true"`
+- Make text selectable: `android:textIsSelectable="true"`
+- Automatically make links click-able: `android:autoLink="web"`
 
 ## Options menu
 
@@ -418,6 +411,8 @@ myAlertBuilder.show();
 
 ## Fragments
 
+They are *mini-activities*, that hover on the activity.
+
 ### Date Picker Fragment
 
 - Create a new blank fragment:
@@ -472,6 +467,10 @@ public void processDatePickerResult(int year, int month, int day) {
         tw.setText(dateMessage);
     }
 ```
+
+### Time Picker Fragment
+
+Use the class `TimePickerDialog` and the method `TimePickerDialog.OnTimeSetListener`.
 
 ---
 
