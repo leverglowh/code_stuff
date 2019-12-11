@@ -2,7 +2,32 @@
 
 > `R.java` file contains the link between XML and Java page.
 
-## Activity
+---
+
+## Table of contents
+
+- [Activities](#activities)
+- [Life Cycle](#life-cycle)
+  - [Main life cycle](#main-life-cycle)
+  - [Saving State](#saving-state)
+  - [Restoring State](#restoring-state)
+- [Intents](#intents)
+  - [Explicit Intent](#explicit-intent)
+  - [Implicit Intent](#implicit-intent)
+    - [Intent action types](#intent-action-types)
+    - [Receive implicit intent](#receive-implicit-intent)
+- [Layout](#layout)
+  - [Linear Layout](#--linearlayout)
+  - [Relative Layout](#--relativelayout)
+- [Designing stuff](#designing-stuff)
+  - [`autoLink`](#autolink)
+  - [`ScrollView`](#scrollview)
+  - [EditText](#edittext)
+  - [`TextView`](#textview)
+- [Options menu](#options-menu)
+- [Alerts](#alerts)
+
+## Activities
 
 File: `AndroidManifest.xml`
 
@@ -113,11 +138,13 @@ if (savedInstanceState != null) {
 }
 ```
 
-## Intent
+## Intents
 
 I use `intent` to communicate between activities, passing data and/or open a new activity.
 
-- **Explicit intent**:  when I know the target.
+### **Explicit intent**: 
+
+*when I know the target.*
 
 ```java
 /* Creating and sending intent */
@@ -134,41 +161,45 @@ String message = intent.getStringExtra("extra_key");
 // Do something with it
 ```
 
-- **Implicit intent**: I don't have the name of the target, but I have my orders.
+### **Implicit intent**: 
 
-  - *Open a **URL** in a web browser*
+*I don't have the name of the target, but I have my orders.*
 
-  ```java
-  String url = siteAddr.getText().toString();
-  if (!url.startsWith("http://") && !url.startsWith("https://")) 
-      url = "http://" + url;
-  Uri webpage = Uri.parse(url);
-  ```
+- *Open a **URL** in a web browser*
 
-  - *Open a location on a **map***
+```java
+String url = siteAddr.getText().toString();
+if (!url.startsWith("http://") && !url.startsWith("https://")) 
+    url = "http://" + url;
+Uri webpage = Uri.parse(url);
+// Add the actions in the next section
+```
 
-  ```java
-  String loc = mapAddr.getText().toString();
-  Uri addressUri = Uri.parse("geo:0,0?q=" + loc);
-  ```
+- *Open a location on a **map***
 
-  - *Share **text***
+```java
+String loc = mapAddr.getText().toString();
+Uri addressUri = Uri.parse("geo:0,0?q=" + loc);
+// Add the actions in the next section
+```
 
-  ```java
-  String txt = textToshare.getText().toString();
-  String mimeType = "text/plain";
-  ShareCompat.IntentBuilder
-  	.from(this)
-      .setType(mimeType)
-      .setChooserTitle("Share this text with")
-      .setText(txt)
-      .startChooser();
-  // Skip actions below
-  ```
+- *Share **text***
 
-  - *[...]*
+```java
+String txt = textToshare.getText().toString();
+String mimeType = "text/plain";
+ShareCompat.IntentBuilder
+	.from(this)
+    .setType(mimeType)
+    .setChooserTitle("Share this text with")
+    .setText(txt)
+    .startChooser();
+// Skip the actions in the next section
+```
 
-Intent action types:
+- *[...]*
+
+#### Intent action types:
 
 `Intent.ACTION_VIEW` 						`Intent.ACTION_EDIT` 					`Intent.ACTION_DIAL`
 
@@ -184,7 +215,7 @@ if (intent.resolveActivity(getPackageManager()) != null) {
 } 
 ```
 
-### Receive implicit intent
+#### Receive implicit intent
 
 I'll have to define an `Intent` filter in `AndroidManifest.xml` to define the type of implicit `Intent` I want to handle.
 
@@ -260,6 +291,12 @@ I'll have to define an `Intent` filter in `AndroidManifest.xml` to define the ty
 
 ## Designing stuff
 
+### `autoLink`
+
+Automatically make links click-able.
+
+`android:autoLink="web"` goes inside `TextView` as a property.
+
 ### `ScrollView`
 
 ```xml
@@ -277,12 +314,6 @@ I'll have to define an `Intent` filter in `AndroidManifest.xml` to define the ty
 ```
 
 In this example, TextView is scrollable.
-
-### `autoLink`
-
-Automatically make links click-able.
-
-`android:autoLink="web"` goes inside `TextView` as a property.
 
 ### EditText
 
