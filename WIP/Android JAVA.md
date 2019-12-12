@@ -22,6 +22,7 @@
   - [`TabLayout`](#--tablayout)
 - [Designing stuff](#designing-stuff)
   - [`ScrollView`](#scrollview)
+  - [`RecyclerView`](#recyclerview)
   - [EditText](#edittext)
   - [`TextView`](#textview)
 - [Options menu](#options-menu)
@@ -417,6 +418,195 @@ tabLayout.addOnTabSelectedListener
 ```
 
 In this example, TextView is scrollable.
+
+### `RecyclerView`
+
+Useful when the list of things to scroll is bigger, such as *contacts list* etc.
+
+- Create the `RecyclerView` in the chosen layout:
+
+```java
+<androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+```
+
+- Create the layout for a *single* line of the *recycler*:
+
+Right-click the `app > res > layout` folder and choose `New > Layout resource file`.
+Choose a name and a layout style, then open the generated file, add all the view you want:
+
+```java
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+   	xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/sprite"
+        android:layout_width="100dp"
+        android:layout_height="100dp"/>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"7
+        android:layout_height="100dp"/>
+</RelativeLayout>
+```
+
+Right-click each one of the views: `refactor > extract > style`, choose a title and select `Launch 'Use Style Where Possible'`. Now the layout file will be edited to use saved styles.
+
+- Create an adapter:
+
+Right-click the package name, select `new > Java Class`, name it `SomethingAdapter`.
+
+```java
+public class SomethingAdapter extends
+    RecyclerView.Adapter<SomethingAdapter.SomethingViewHolder> {
+}
+```
+
+-Implement methods `onCreateViewHolder`, `onBindViewHolder` and `getItemCount`.
+-Add inner class `SomethingViewHolder`:
+
+```java
+public class SomethingAdapter extends
+    RecyclerView.Adapter<SomethingAdapter.WordViewHolder> {
+    // Implement as many view holders as the number of views 
+    // you want to controll in the recycler view
+    class FirstViewHolder extends RecyclerView.ViewHolder {
+        public final TextView nameItemView;
+		final SomethingAdapter mAdapter;
+        
+        public FirstViewHolder(View view, SomethingAdapter adapter) {
+   			super(view);
+   			nameItemView = view.findViewById(R.id.name);
+   			this.mAdapter = adapter;
+		}
+        
+        void bind(int position){
+            String name = pokemonList.get(position);
+            nameItemView.setText("something")
+        }
+    }
+    class SecondViewHolder extends RecyclerView.ViewHolder {...}
+}
+```
+
+- Get the list of things to display ready in `SomethingAdapter`:
+
+```java
+private LinkedList<String> pokemonList;
+private LayoutInflater mInflater; //used to get the view
+```
+
+- Complete the getter method `getItemCount`:
+
+```java
+@Override
+public int getItemCount() {
+   return pokemonList.size();
+}
+```
+
+- Implement the `SomethingAdapter`'s constructor:
+
+```java
+public SomethingAdapter(Context context, LinkedList<String> pkmList){
+	mInflater = LayoutInflater.from(context);
+    this.pokemonList = pkmList;
+}
+```
+
+- Complete the `onCreateViewHolder` method:
+
+```java
+@Override
+public SomethingViewHolder onCreateViewHolder(ViewGroup parent, 
+                                                     int viewType) {
+   View mItemView = mInflater.inflate(R.layout.wordlist_item, 
+                                                     parent, false);
+   if (viewType == 0){
+       // First view holder
+       return new FirstViewHolder(mItemView, this);
+   } else { // Second view holder
+       return new SecondViewHolder(mItemView, this)
+   }
+}
+```
+
+- Complete the `onBindViewHolder` method:
+
+```java
+@Override
+public void onBindViewHolder(WordViewHolder holder, int position) {
+   if (position%2!=0){ // odd indexes are names
+       ((FirstViewHolder) holder).bind(position);
+   } else { //even indexes are images
+       ((SecondViewHolder) holder).bind(position);
+   }
+}
+```
+
+- Create the `RecyclerView` in my *Activity*:
+
+```java
+private RecyclerView mRecyclerView;
+private SomethingAdapter mAdapter;
+
+// inside oncreate
+// Get a handle to the RecyclerView.
+mRecyclerView = findViewById(R.id.myRecycler);
+// Create an adapter and supply the data to be displayed.
+mAdapter = new SomethingAdapter(this, pokemonList);
+// Connect the adapter with the RecyclerView.
+mRecyclerView.setAdapter(mAdapter);
+// Give the RecyclerView a default layout manager.
+GridLayoutManager layoutManager = 
+    new GridLayoutManager(this.getContext(),10);
+layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+	@Override
+    public int getSpanSize(int position) {
+        // Firstview.size = 3/10, Secondview.size = 7/10
+    	return position%2==0 ? 3 : 7;
+    }
+});
+mRecyclerView.setLayoutManager(layoutManager);
+```
+
+If the `recyclerView` goes inside a fragment:
+
+```java
+@Override
+public View onCreateView(LayoutInflater inflater, ViewGroup container, 												Bundle savedInstanceState) {
+	// Inflate the layout for this fragment
+    View view = inflater.inflate(R.layout.tab_fragment3, container, false);
+    // Get a handle to the RecyclerView.
+    mRecyclerView = view.findViewById(R.id.pkm_list_recycler);
+    // Create an adapter and supply the data to be displayed.
+    mAdapter = new PokemonListAdapter(this.getContext(), pokemonList);
+    // Connect the adapter with the RecyclerView.
+    mRecyclerView.setAdapter(mAdapter);
+    // Give the RecyclerView a default layout manager.
+    GridLayoutManager layoutManager = 
+        					new GridLayoutManager(this.getContext(),10);
+    layoutManager.setSpanSizeLookup(
+        new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return position%2==0 ? 3 : 7;
+            }
+        });
+    mRecyclerView.setLayoutManager(layoutManager);
+
+    return view;
+}
+```
+
+This is because I have to inflate the layout to the container, and I have to use the `view` to find other `view`s.
 
 ### EditText
 
