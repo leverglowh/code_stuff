@@ -608,6 +608,39 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, 									
 
 This is because I have to inflate the layout to the container, and I have to use the `view` to find other `view`s.
 
+- Make elements *clickable*:
+
+```java
+// Make all ViewHolders implement View.OnClickListener
+class FirstViewHolder extends ... implements View.OnClickListener {}
+class SecondViewHolder extends ... implements View.OnClickListener {}
+```
+
+This will make you implement the `onClick` handler for each one:
+
+```java
+@Override
+public void onClick(View v) {
+    // Get the position of the item that was clicked.
+    int mPosition = getLayoutPosition()+1;
+    // Use that to access the affected item in mWordList.
+    String element = pokemonList.get(mPosition);
+    Toast.makeText(v.getContext(), "Clicked: " + element, 															Toast.LENGTH_SHORT).show();
+}
+```
+
+And don't forget to <u>bind the method</u> to the view inside `ViewHolder`'s constructor:
+
+```java
+itemView.setOnClickListener(this);
+```
+
+- To scroll to chosen place:
+
+```java
+mRecyclerView.smoothScrollToPosition(5);
+```
+
 ### EditText
 
 I can set multiple `inputType`s by appending `|newType`.
