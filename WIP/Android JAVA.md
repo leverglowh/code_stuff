@@ -27,6 +27,7 @@
   - [`TextView`](#textview)
 - [Options menu](#options-menu)
 - [Alerts](#alerts)
+- [Async tasks](#async-tasks)
 - [Fragments](#fragments)
   - [Date Picker](#date-picker-fragment)
 
@@ -643,6 +644,10 @@ mRecyclerView.smoothScrollToPosition(5);
 
 ### EditText
 
+- `setInputType`
+
+  ​	`(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_FLAG_MULTI_LINE);`
+
 I can set multiple `inputType`s by appending `|newType`.
 Find all input types [in the documentation](https://developer.android.com/reference/android/widget/TextView.html#attr_android:inputType).
 
@@ -659,6 +664,8 @@ Find all input types [in the documentation](https://developer.android.com/refere
 
 - Make text selectable: `android:textIsSelectable="true"`
 - Automatically make links click-able: `android:autoLink="web"`
+- `setTextColor(Color.RED)` sets the text color of the *TextView* as red.
+- `setBackgroundColor(Color.RED)` sets the background color of the TV.
 
 ## Options menu
 
@@ -741,6 +748,81 @@ myAlertBuilder.setNegativeButton("Cancel",
 myAlertBuilder.show();
 ```
 
+## Async tasks
+
+`AsyncTask` is an abstract class that performs background task, such as *querying database*, *connecting to Internet* etc. I'll have to implement the following abstract methods:
+
+- `onPreExecute()`: UI thread, sets up the task (*progress bar*).
+- `doInBackground()`: main method in which goes the task.
+- `onProgressUpdate()`: UI thread, when I have to update the status (*progress bar*).
+- `onPostExecute()`: UI thread, when I have to update the result.
+
+`AsyncTask` takes in 3 parameters:  *params*, *progress*, *result*.
+
+```java
+public class SimpleAsyncTask extends AsyncTask <Void, Void, String> {}
+```
+
+Add the reference to the `TextView` in which I'll show my progress/result:
+
+```java
+private WeakReference<TextView> mTextView;
+```
+
+Create a constructor based on this `TextView`:
+
+```java
+SimpleAsyncTask(TextView tv) {
+       mTextView = new WeakReference<>(tv);
+}
+```
+
+Implement the `doInBackground` method:
+
+```java
+@Override
+protected String doInBackground(Void... voids) {
+	// Do something interesting
+   	return someString;
+}
+```
+
+Implement `onPostExecute` method:
+
+```java
+// No override
+protected void onPostExecute(String result) {
+    // Access weakReference by using get()
+    mTextView.get().setText(result);
+}
+```
+
+Remember to <u>save the state</u>.
+
+To implement `onProgressUpdate`:
+
+Modify the second parameter of the *superclass* to the type you want to be using:
+
+```java
+public class SimpleAsyncTask extends AsyncTask<Void, String, String>
+```
+
+Implement the method using `@Override`: use values[0] if you use only one parameter.
+
+```java
+@Override
+protected void onProgressUpdate(String... values) {
+    super.onProgressUpdate(values[0]);
+    showTheProgressSomewhere();
+}
+```
+
+Inside `doInBackgroud` use `publishProgress` to update the progress:
+
+```java
+publishProgress("Progress String");
+```
+
 ## Fragments
 
 They are *mini-activities*, that hover on the activity.
@@ -812,11 +894,7 @@ Use the class `TimePickerDialog` and the method `TimePickerDialog.OnTimeSetListe
 
 - `finish();` ends the activity life, when  `←` is pressed this activity won't be shown.
 
-- `TextView.setTextColor(Color.RED)` sets the text color of the *TextView* as red.
 
-- `TextView.setBackgroundColor(Color.RED)` sets the background color of the TV.
+## Default classes
 
-- `EditText.setInputType`
-
-  ​	`(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_FLAG_MULTI_LINE);`
-
+- `WeakReference`: Allows the object to be garbage collected.
