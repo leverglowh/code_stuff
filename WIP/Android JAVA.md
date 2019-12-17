@@ -16,6 +16,8 @@
   - [Implicit Intent](#implicit-intent)
     - [Intent action types](#intent-action-types)
     - [Receive implicit intent](#receive-implicit-intent)
+  - [Broadcast Receiver](#broadcast-receiver)
+  - [Sending Broadcast](#sending-broadcast)
 - [Layout](#layout)
   - [`LinearLayout`](#--linearlayout)
   - [`RelativeLayout`](#--relativelayout)
@@ -237,6 +239,92 @@ I'll have to define an `Intent` filter in `AndroidManifest.xml` to define the ty
 </activity>
 ```
 
+### Broadcast Receiver
+
+When a system event occurs,  a *system broadcast* message is sent by the system.
+
+- Add a new `BroadcastReceiver`:
+
+`file > new > other > Broadcast Receiver`, select all tics.
+
+- A `BroadcastReceiver` is either *static* or *dynamic*:
+  - **static**:  Add `<receiver>` element in the `AndroidManifest.xml` file.
+  - **dynamic**: Register the receiver with app *context* or activity *context*.
+
+Inside the *MainActivity*:
+
+```java
+private MyReceiver myReceiver = new MyReceiver();
+```
+
+At the end on `onCreate()`, create an intent filter:
+
+```java
+IntentFilter filter = new IntentFilter();
+```
+
+Add action listeners:
+
+```java
+filter.addAction(Intent.ACTION_POWER_DISCONNECTED);
+filter.addAction(Intent.ACTION_POWER_CONNECTED);
+```
+
+Register the receiver using the activity context:
+
+```java
+this.registerReceiver(myReceiver, filter);
+```
+
+Unregister the receiver in `onDestroy`:
+
+```java
+this.unregisterReceiver(myReceiver);
+```
+
+Implement `onReceive` in `MyReceiver.java`:
+
+```java
+@Override
+public void onReceive(Context context, Intent intent) {
+    String intentAction = intent.getAction();
+    if (intentAction != null) {
+        String toastMessage = "unknown intent action";
+        switch (intentAction) {
+            case Intent.ACTION_POWER_CONNECTED:
+                toastMessage = "Power connected!";
+                break;
+            case Intent.ACTION_POWER_DISCONNECTED:
+                toastMessage = "Power disconnected!";
+                break;
+        }
+        Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show();
+    }
+}
+```
+
+### Sending Broadcast
+
+Broadcast action name should be like:
+`BuildConfig.APPLICATION_ID + ".ACTION_MY_BROADCAST`.
+
+- Normal broadcasts: asynchronous, receivers are run in undefined order.
+
+Create a broadcast intent and pass it to `sendBroadcast(Intent)`:
+
+- Local broadcasts: sent to receivers in the same app.
+
+Create a broadcast intent and pass it to `LocalBroadcastManager.sendBroadcast()`.
+
+```java
+Intent intent = new Intent(ACTION_CUSTOM_BROAD);
+LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+```
+
+- Ordered broadcasts: delivered to one receiver at a time, propagating results or canceling the broadcast.
+
+Create a broadcast intent and pass it to `sendOrderedBroadcast(Intent, String)`.
+
 ## Layout
 
 ### - `LinearLayout`
@@ -262,7 +350,6 @@ I'll have to define an `Intent` filter in `AndroidManifest.xml` to define the ty
         android:layout_weight="1"
         />
 </LinearLayout>
-         
 ```
 
 ### - `RelativeLayout`
@@ -749,6 +836,8 @@ myAlertBuilder.show();
 ```
 
 ## Async tasks
+
+### **Use `AsyncTaskLoader` instead.**
 
 `AsyncTask` is an abstract class that performs background task, such as *querying database*, *connecting to Internet* etc. I'll have to implement the following abstract methods:
 
