@@ -7,10 +7,12 @@
 ## Table of contents
 
 - [Activities](#activities)
+
 - [Life Cycle](#life-cycle)
   - [Main life cycle](#main-life-cycle)
   - [Saving State](#saving-state)
   - [Restoring State](#restoring-state)
+  
 - [Intents](#intents)
   - [Explicit Intent](#explicit-intent)
   - [Implicit Intent](#implicit-intent)
@@ -18,19 +20,32 @@
     - [Receive implicit intent](#receive-implicit-intent)
   - [Broadcast Receiver](#broadcast-receiver)
   - [Sending Broadcast](#sending-broadcast)
+  
 - [Layout](#layout)
   - [`LinearLayout`](#--linearlayout)
   - [`RelativeLayout`](#--relativelayout)
   - [`TabLayout`](#--tablayout)
+  
 - [Designing stuff](#designing-stuff)
   - [`ScrollView`](#scrollview)
   - [`RecyclerView`](#recyclerview)
   - [EditText](#edittext)
   - [`TextView`](#textview)
+  
 - [Options menu](#options-menu)
+
 - [Alerts](#alerts)
+
+- [Notifications](#notifications)
+
+  - [Creating a notification](#creating-a-notification)
+
+  - [Handling a notification](#handling-a-notification)
+
 - [Async tasks](#async-tasks)
+
 - [Fragments](#fragments)
+  
   - [Date Picker](#date-picker-fragment)
 
 ## Activities
@@ -833,6 +848,136 @@ myAlertBuilder.setNegativeButton("Cancel",
 });
 
 myAlertBuilder.show();
+```
+
+## Notifications
+
+### Creating a notification
+
+- Create *notification channel* id, *notification manager* and id inside your activity:
+
+```java
+private static final String MY_ID = "primary_notification_channel";
+private NotificationManager notificationManager;
+private static final int NOTIFICATION_ID = 0;
+```
+
+- Initiate `NotificationManager` [inside `onCreate`]:
+
+```java
+notificationManager = (NotificationManager) 													getSystemService(NOTIFICATION_SERVICE); 
+```
+
+- Create and set a `NotificationChannel` [inside `onCreate`]:
+
+```java
+NotificationChanner notificationChanner = new NotificationChanner(MY_ID, 
+                   	"Notification type",
+                    NotificationManager.IMPORTANCE_HIGH);
+notificationChannel.enableLights(true);
+notificationChannel.setLightColor(Color.RED);
+notificationChannel.enableVibration(true);
+notificationChannel.setDescription("Notification from MEEE");
+mNotifyManager.createNotificationChannel(notificationChannel);
+```
+
+- Choose a notification Icon:
+
+`file > new > Image Asset` and choose *Notification Icons*.
+
+- Create method `getNotificationBuilder()` for the *Activity*:
+
+```java
+private NotificationCompat.Builder getNotificationBuilder() {
+    NotificationCompat.Builder notificationBuilder = new 					NotificationCompat.Builder(this, MY_ID)
+        .setContentTitle("Hello I'm a notification!")
+        .setContentText("And this is some senseless text!!!!")
+        .setSmallIcon(R.drawable.ic_android);
+    return notificationBuilder;
+}
+```
+
+- Send the notification:
+
+```java
+NotificationCompat.Builder notifyBuilder = getNotificationBuilder();
+mNotifyManager.notify(NOTIFICATION_ID, notifyBuilder.build());
+```
+
+### Handling a notification
+
+Intents used for notifications are wrapped in `PendingIntent`.
+To make the notification do something modify  `getNotificationBuilder`:
+
+```java
+Intent intent = new Intent(this, DatePickerActivity.class);
+PendingIntent pendIntent = PendingIntent.getActivity(this, NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+```
+
+and add the following setters to the *Notification builder*:
+
+```java
+	.setContentIntent(notificationPenddIntent)
+    .setAutoCancel(true);
+```
+
+#### Notification default options
+
+```java
+	.setDefaults(NotificationCompat.DEFAULT_ALL)
+```
+
+#### Notification priority
+
+<table>
+    <tr>
+        <td>MIN</td>
+        <td>LOW</td>
+        <td>DEFAULT</td>
+        <td>HIGH</td>
+        <td>MAX</td>
+    </tr>
+    <tr>
+    	<td>-2</td>
+        <td>-1</td>
+        <td>0</td>
+        <td>1</td>
+        <td>2</td>
+    </tr>
+</table>
+
+```java
+	.setPriority(NotificationCompat.PRIORITY_HIGH)
+```
+
+### Update or cancel notification
+
+- Update
+
+```java
+public void updateNotification() {
+    // Add a image from assets to the notification
+    AssetManager assetManager = this.getAssets();
+    InputStream inputStream;
+    Bitmap bitmap = null;
+    try {
+        inputStream = assetManager.open("pokeball.png");
+        bitmap = BitmapFactory.decodeStream(inputStream);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    NotificationCompat.Builder builder = getNotificationBuilder();
+    notifyBuilder.setStyle(new NotificationCompat.BigPictureStyle()
+    	.bigPicture(bitmap)
+        .setBigContentTitle("Updated!!!!"));
+    notificationManager.notify(NOTIFICATION_ID, builder.build());
+}
+```
+
+- Cancel
+
+```java
+notificationManager.cancel(NOTIFICATION_ID);
 ```
 
 ## Async tasks
