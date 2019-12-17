@@ -56,7 +56,7 @@ File: `AndroidManifest.xml`
 
 ```xml
 <activity
-	android:name=".ReadActivity"
+android:name=".ReadActivity"
     android:parentActivityName=".MainActivity"
     />
 ```
