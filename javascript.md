@@ -149,7 +149,7 @@ function addNumbers(x, y){
 ```
 
 ##### Function expressions (anonymous function)
-I don't name the function, and I store it in a variable (commonly a `const`);
+I don't name the function, and I store it in a variable (commonly a `const`), in this way, the function won't be constructed at compile time, instead it gets initialized at runtime when I initialize the variable in which it's stored. I save time and space.
 ```javascript
 const calculateArea = function(width, height) {
   const area = width * height;
