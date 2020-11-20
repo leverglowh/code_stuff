@@ -12,6 +12,6 @@ Personal repository to remember things I learn.
   - [HTML](https://github.com/leverglowh/code_stuff/blob/master/WIP/html.txt)
   - [Python](https://github.com/leverglowh/code_stuff/blob/master/WIP/Python.md)
   - [React JSX](https://github.com/leverglowh/code_stuff/blob/master/WIP/React%20and%20JSX.md)
-  - [Swift](https://github.com/leverglowh/code_stuff/blob/master/WIP/Swift%203.md)
+  - [Swift](https://github.com/leverglowh/code_stuff/blob/master/WIP/Swift%205.md)
   - [xcode tips and shortcuts](https://github.com/leverglowh/code_stuff/blob/master/WIP/xcode%20stuff.txt)
 </details>
