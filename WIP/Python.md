@@ -2,8 +2,6 @@
 
 ---
 
-https://github.com/jackfrued/Python-100-Days/blob/master/Day01-15/07.字符串和常用数据结构.md#使用元组
-
 Remember:
 
 > Python is very much space sensitive. **USE THE FREAKING TAB**
@@ -116,6 +114,14 @@ l = sorted(list1, key=len)
 # Slicing works here too!
 ```
 
+### Tuple
+
+```python
+
+```
+
+
+
 ---
 
 ### Base functions
@@ -159,6 +165,10 @@ range(101) # 0-100
 range(1, 100) # 1-99
 range(1, 100, 2) # 1-99, +2 every step
 ```
+
+##### Generators and `yield`
+
+
 
 ---
 
