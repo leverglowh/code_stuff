@@ -6,9 +6,13 @@ An entity describes a component's interface by specifying its **inputs** and **o
 
 ```vhdl
 entity box is
+  generic (
+  	N : integer := 5 -- A generic parameter
+  );
   port(
     -- portName(s) : direction type
-  	in1, in2, in3: in std_logic; -- input ports
+  	in1, in2, in3 : in std_logic; -- input ports
+    in4 : in std_logic_vector(N-1 downto 0);
     out1 : out std_logic; -- output port
     out2 : out std_logic -- output port
   );
@@ -47,11 +51,112 @@ end dataflow;
 
 ### Structural architecture
 
+If a signal of a component is irrelevant, we can map `open` to it.
 
+```vhdl
+architecture structural of entityName is
+  signal tmp : std_logic_vector(31 downto 0);
+
+	component compName is
+    generic (N : integer := 5);
+		port (
+    	in1, in2 : in std_logic_vector(N-1 downto 0);
+      out1 : out std_logic_vector(N-1 downto 0);
+    );
+	end component;
+
+begin
+  compInstanceName : compName -- Create an instance of the previously declared component
+    generic map(32) -- Mapping of the generic value
+    port map(in1, tmp, out1); -- Mapping of ports, like function calling in programming
+    
+  compInstanceName2 : compName -- New instance
+    generic map(N => 32) -- Explicit names in mapping
+    port map(in1 => open, in2 => tmp, out1 => out1); -- componentSig => localSig
+end structural;
+```
 
 ### Behavioral architecture
 
+In `process (in1, in2, in3)`, `in1`, `in2`, `in3` are elements of the sensibility list. Every time any of them changes, the process is awaken and executed. It's basically build by all signals that are at the right of the `<=` simbol.
+The variables are virtual elements, that can be used to temporarily store values. A variable can be reused multiple times inside a process.
 
+In behavioral architecture the instructions are **synchronous**, carried out one by one, **without time delay**.
+The update to out ports is completed **only when the process terminates its execution**. This obliges us to store intermediate values only in variables, since signals have no memory and cannot be updated.
+
+If a out port is written multiple times, only the last one will be carried out.
+
+```vhdl
+architecture behavioral of entityName is
+begin
+  process (in1, in2, in3)
+  	variable tmp1, tmp2 : std_logic;
+	begin
+    tmp1 := in3 and in2;
+		out1 <= tmp1 and in1;
+		tmp2 := in1 and in2;
+		out2 <= tmp2 or in3;
+	end process;
+end architecture;
+```
+
+Intermediate signals can be writter as out ports:
+
+```vhdl
+architecture behavioral of entityName is
+signal tmp : std_logic;
+begin
+  process(in1, in2, in3)
+  begin
+    tmp <= in1 and in2 and in3;
+  end process;
+	
+  out1 <= tmp or in4; -- Mixing dataflow and behavioral architectures.
+end architecture;
+```
+
+---
+
+## Conditionals
+
+### if - elsif - else
+
+```vhdl
+if in1 = '1' then
+  out1 <= '0';
+elsif in1 = '0' then
+  out1 <= in1;
+end if
+```
+
+### when - else (conditional assignment)
+
+```vhdl
+out2 <= in1 when ctrl1 = '00' else -- Cover all possible cases!
+    		in2 when ctrl1 = '01' else
+        in3 when ctrl1 = '10' else
+        in4;
+```
+
+### with - select (conditional assignment)
+
+```vhdl
+with ctrl1 select
+  out1 <= in1 when "00",
+  				in2 when "01",
+  				in3 when "10",
+  				in4 when others; -- others covers all remaining cases.
+```
+
+---
+
+## For loops
+
+```vhdl
+for i in 1 to N-1 loop
+  tmp := tmp and in1(i);
+end loop;
+```
 
 ---
 
@@ -115,6 +220,12 @@ Must include library
 use ieee.numeric_std.all;
 ```
 
+#### `integer`
+
+```vhdl
+N : integer := 5;
+```
+
 #### `UNSIGNED`
 
 Natural, binary integer numbers.
@@ -134,3 +245,95 @@ out2 <= std_logic(sum(31)); -- Type casting and value indixing
 
 Signed and unsigned values support arithmetic operations such as `+`, `-`, `*`, and `/`.
 The division `/` operator is the only one **not synthesizable**.
+
+---
+
+## D type flip-flop (asynchronous reset)
+
+```vhdl
+entity myFlipFlop is
+  port (
+  	in1 : in std_logic;
+    clk, rst : in std_logic;
+    out1 : out std_logic;
+  );
+end myFlipFlop;
+```
+
+```vhdl
+architecture behavioral of myFlipFlop is
+begin
+  process(clk, rst)
+  begin
+    if rst = '1' then
+      out1 <= '0';
+    -- rising_edge(clk) is the same as clk='1' & clk'event (clk is changed)
+    elsif rising_edge(clk) then
+      out1 <= in1;
+    end if
+  end process;
+end behavioral;
+```
+
+---
+
+## D type flip-flop (synchronous reset)
+
+```vhdl
+entity myFlipFlopSync is
+  port (
+  	in1 : in std_logic;
+    clk, rst : in std_logic;
+    out1 : out std_logic;
+  );
+end myFlipFlopSync;
+```
+
+```vhdl
+architecture behavioral of myFlipFlopSync is
+begin
+  process(clk, rst)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        out1 <= '0';
+      else
+        out1 <= in1;
+      end if;
+    end if;
+  end process;
+end behavioral;
+```
+
+---
+
+## Register
+
+```vhdl
+entity reg is
+	port(
+    in1 : in std_logic_vector(31 downto 0);
+		clk, rst : in std_logic;
+		out1 : out std_logic_vector(31 downto 0)
+  );
+end reg;
+```
+
+```vhdl
+architecture behavioral of reg is
+begin
+	process(clk, rst)
+  begin
+		if rst = '1' then
+			out1 <= (others => '0');
+    elsif clk = '1' and clk'event then
+      out1 <= in1;
+    end if;
+  end process;
+end behavioral;
+```
+
+---
+
+## FSM
+
