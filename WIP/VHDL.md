@@ -7,11 +7,11 @@ An entity describes a component's interface by specifying its **inputs** and **o
 ```vhdl
 entity box is
   generic (
-  	N : integer := 5 -- A generic parameter
+    N : integer := 5 -- A generic parameter
   );
   port(
     -- portName(s) : direction type
-  	in1, in2, in3 : in std_logic; -- input ports
+    in1, in2, in3 : in std_logic; -- input ports
     in4 : in std_logic_vector(N-1 downto 0);
     out1 : out std_logic; -- output port
     out2 : out std_logic -- output port
@@ -35,17 +35,16 @@ The update of the values is considered *instantaneous*, virtually.
 architecture dataflow of entityName is
   -- An intermediate signal of type std_logic initialized to 0
   signal tmp: std_logic := '0'; -- := assignment
-	constant constantName: std_logic_vector(31 downto 0) :=
-    (31 downto 30 => '1', 0 => '1', others => '0');
-    -- [1100 0000 0000 0000 0000 0000 0000 0001]
+  constant constantName: std_logic_vector(31 downto 0) :=
+    (31 downto 30 => '1', 0 => '1', others => '0'); -- [1100 0000 0000 0000 0000 0000 0000 0001]
 begin
   out1 <= in1 and in2 and in3;
-	out2 <= in1 when ctlr1 = '0' else -- A ifelse, MUST include all cases
-    			in3;
+  out2 <= in1 when ctlr1 = '0' else -- An if-else, MUST include all cases
+    	  in3;
   out4 <= ('0' & costantName(30 downto 0)); -- [0100 0000 0000 0000 0000 0000 0000 0001]
   with ctrl2 select
     out3 <= in1 when "00" | "10",
-    				in3 when others; -- Must always be added
+    	    in3 when others; -- Must always be added
 end dataflow;
 ```
 
@@ -57,13 +56,13 @@ If a signal of a component is irrelevant, we can map `open` to it.
 architecture structural of entityName is
   signal tmp : std_logic_vector(31 downto 0);
 
-	component compName is
+  component compName is
     generic (N : integer := 5);
-		port (
-    	in1, in2 : in std_logic_vector(N-1 downto 0);
-      out1 : out std_logic_vector(N-1 downto 0);
+    port (
+      in1, in2 : in std_logic_vector(N-1 downto 0);
+      out1 : out std_logic_vector(N-1 downto 0)
     );
-	end component;
+  end component;
 
 begin
   compInstanceName : compName -- Create an instance of the previously declared component
@@ -90,13 +89,13 @@ If a out port is written multiple times, only the last one will be carried out.
 architecture behavioral of entityName is
 begin
   process (in1, in2, in3)
-  	variable tmp1, tmp2 : std_logic;
-	begin
+    variable tmp1, tmp2 : std_logic;
+  begin
     tmp1 := in3 and in2;
-		out1 <= tmp1 and in1;
-		tmp2 := in1 and in2;
-		out2 <= tmp2 or in3;
-	end process;
+    out1 <= tmp1 and in1;
+    tmp2 := in1 and in2;
+    out2 <= tmp2 or in3;
+  end process;
 end architecture;
 ```
 
@@ -133,7 +132,7 @@ end if
 
 ```vhdl
 out2 <= in1 when ctrl1 = '00' else -- Cover all possible cases!
-    		in2 when ctrl1 = '01' else
+    	in2 when ctrl1 = '01' else
         in3 when ctrl1 = '10' else
         in4;
 ```
@@ -143,9 +142,9 @@ out2 <= in1 when ctrl1 = '00' else -- Cover all possible cases!
 ```vhdl
 with ctrl1 select
   out1 <= in1 when "00",
-  				in2 when "01",
-  				in3 when "10",
-  				in4 when others; -- others covers all remaining cases.
+  	  in2 when "01",
+  	  in3 when "10",
+  	  in4 when others; -- others covers all remaining cases.
 ```
 
 ---
@@ -253,9 +252,9 @@ The division `/` operator is the only one **not synthesizable**.
 ```vhdl
 entity myFlipFlop is
   port (
-  	in1 : in std_logic;
+    in1 : in std_logic;
     clk, rst : in std_logic;
-    out1 : out std_logic;
+    out1 : out std_logic
   );
 end myFlipFlop;
 ```
@@ -270,7 +269,7 @@ begin
     -- rising_edge(clk) is the same as clk='1' & clk'event (clk is changed)
     elsif rising_edge(clk) then
       out1 <= in1;
-    end if
+    end if;
   end process;
 end behavioral;
 ```
@@ -282,9 +281,9 @@ end behavioral;
 ```vhdl
 entity myFlipFlopSync is
   port (
-  	in1 : in std_logic;
+    in1 : in std_logic;
     clk, rst : in std_logic;
-    out1 : out std_logic;
+    out1 : out std_logic
   );
 end myFlipFlopSync;
 ```
@@ -311,10 +310,10 @@ end behavioral;
 
 ```vhdl
 entity reg is
-	port(
+  port(
     in1 : in std_logic_vector(31 downto 0);
-		clk, rst : in std_logic;
-		out1 : out std_logic_vector(31 downto 0)
+    clk, rst : in std_logic;
+    out1 : out std_logic_vector(31 downto 0)
   );
 end reg;
 ```
@@ -322,10 +321,10 @@ end reg;
 ```vhdl
 architecture behavioral of reg is
 begin
-	process(clk, rst)
+  process(clk, rst)
   begin
-		if rst = '1' then
-			out1 <= (others => '0');
+    if rst = '1' then
+      out1 <= (others => '0');
     elsif clk = '1' and clk'event then
       out1 <= in1;
     end if;
