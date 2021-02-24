@@ -341,7 +341,7 @@ The 3 main elements of a FSM are: the memory, the "state", the output.
 ```vhdl
 entity fsmName is
   port(
-  	i: in std_logic;
+    i: in std_logic;
     clk: in std_logic;
     rst: in std_logic;
     o: out std_logic
@@ -351,50 +351,50 @@ end fsmName;
 
 ```vhdl
 architecture FSM of fsmName is
-	type state_type is (S0, S1, S2, S3); -- Declare new type that includes all states
-	signal next_state, current_state: state_type;
+  type state_type is (S0, S1, S2, S3); -- Declare new type that includes all states
+  signal next_state, current_state: state_type;
 begin
-	state_reg: process(clk, rst) -- state register
+  state_reg: process(clk, rst) -- state register
   begin
-		if rst='1' then
+	  if rst='1' then
       current_state <= S0;
-		elsif rising_edge(clk) then -- update the current state with the next state
+    elsif rising_edge(clk) then -- update the current state with the next state
       current_state <= next_state;
     end if;
   end process;
   -- ------------------------------------
   delta: process(current_state, i) -- calculate next state
   begin
-		case current_state is
+    case current_state is
       when S0 =>
-				if i='0' then
+        if i='0' then
           next_state <= S1;
-				else
-					next_state <= S0;
+        else
+          next_state <= S0;
         end if;
       when S1 =>
-				if i='0' then
+        if i='0' then
           next_state <= S2;
 				else
-					next_state <= S0;
-				end if;
+          next_state <= S0;
+        end if;
       when S2 =>
       	if i='0' then
-					next_state <= S2;
+          next_state <= S2;
         else
-					next_state <= S3; end if;
+          next_state <= S3; end if;
     	when S3 =>
-      	if i='0' then
-					next_state <= S1;
+        if i='0' then
+          next_state <= S1;
         else
-					next_state <= S0;
+          next_state <= S0;
         end if;
-  	end case;
-	end process;
+    end case;
+  end process;
   -- ------------------------------------
   lambda: process(current_state) -- output
   begin
-		case current_state is
+    case current_state is
       when S0 =>
         o <= '0';
       when S1 =>
@@ -413,22 +413,22 @@ Lambda and delta can be unified into a single process, with
 ```vhdl
 lambda_delta: process(current_state, i)
 begin
-	case current_state is
+  case current_state is
     when S0 =>
-  		o <= '0';
-  		if i='0' then
-				next_state <= S1;
-  		else
-				next_state <= S0;
-  		end if;
-		when S1 =>
-  		o <= '0';
-  		if i='0' then
-				next_state <= S2;
-  		else
-				next_state <= S0;
-  		end if;
-      -- ...
+      o <= '0';
+      if i='0' then
+        next_state <= S1;
+      else
+        next_state <= S0;
+      end if;
+    when S1 =>
+      o <= '0';
+      if i='0' then
+        next_state <= S2;
+      else
+        next_state <= S0;
+      end if;
+    -- ...
   end case;
 end process;
 ```
