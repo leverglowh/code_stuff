@@ -18,5 +18,10 @@ Personal repository to remember things I learn.
   - [Vue 2](https://github.com/leverglowh/code_stuff/blob/master/WIP/Vue2.md)
   - [Swift](https://github.com/leverglowh/code_stuff/blob/master/WIP/Swift%205.md)
   - [xcode tips and shortcuts](https://github.com/leverglowh/code_stuff/blob/master/WIP/xcode%20stuff.txt)
+</details>
+
+<details>
+  <summary>Archive</summary>
+
   - [VHDL](https://github.com/leverglowh/code_stuff/blob/master/WIP/VHDL.md)
 </details>
