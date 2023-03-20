@@ -6,53 +6,38 @@ Remember:
 
 > Python is very much space sensitive. **USE THE FREAKING TAB**
 
-##### Libraries
+---
 
-- `turtle`: draw like a turtle!
+### Lists
 
 ```python
-import turtle
-turtle.pensize(4)
-turtle.pencolor('green')
+list1 = [1, 3, 5, 7, 100]
 
-turtle.forward(100) # draw 100 px
-turtle.right(90)	# turn 90 deg right
-
-turtle.mainloop() 	# handle other events
+print(len(list1)) # 5
+list1.append(200) # [1, 3, 5, 7, 100, 200]
+list1.insert(1, 400) # [1, 400, 3, 5, 7, 100]
+list1 += [1000, 2000]
+list1.remove(3)
+list1.pop(0)
+list1.pop(len(list1) - 1)
+list1.clear()
+l = sorted(list1)
+l = sorted(list1, reverse=True)
+l = sorted(list1, key=len)
+# Slicing works here too!
 ```
 
-- `random`: generate a random number
+### Tuple
 
 ```python
-import random
 
-random_number = random.randint(1, 100) # 1-100
 ```
 
 ---
 
-##### Math operations
+### Operations
 
-```python
-a = 321
-b = 123
-
-print(a + b)	# 444
-print(a - b)	# 198
-print(a * b)	# 39483
-print(a / b)	# 2.60975..
-print(a // b)	# 2 Floor div
-print(a % b)	# 75
-print(a ** b)	# 19958... Power!!!
-
-print(a % 10) #1 last number
-print(a // 10 % 10) #2 second number
-print(a // 100) #3 third number and first
-```
-
----
-
-### String operations
+#### Strings
 
 ```python
 s1 = 'hello '
@@ -93,34 +78,24 @@ print(s.center(20, '*')) # ***hello, world!****
 print(s.rjust(20, '-')) # -------hello, world!
 ```
 
----
-
-### Lists
+#### Math
 
 ```python
-list1 = [1, 3, 5, 7, 100]
+a = 321
+b = 123
 
-print(len(list1)) # 5
-list1.append(200) # [1, 3, 5, 7, 100, 200]
-list1.insert(1, 400) # [1, 400, 3, 5, 7, 100]
-list1 += [1000, 2000]
-list1.remove(3)
-list1.pop(0)
-list1.pop(len(list1) - 1)
-list1.clear()
-l = sorted(list1)
-l = sorted(list1, reverse=True)
-l = sorted(list1, key=len)
-# Slicing works here too!
+print(a + b)    # 444
+print(a - b)    # 198
+print(a * b)    # 39483
+print(a / b)    # 2.60975..
+print(a // b)   # 2 Floor div
+print(a % b)    # 75
+print(a ** b)   # 19958... Power!!!
+
+print(a % 10) #1 last number
+print(a // 10 % 10) #2 second number
+print(a // 100) #3 third number and first
 ```
-
-### Tuple
-
-```python
-
-```
-
-
 
 ---
 
@@ -148,6 +123,14 @@ a = 13
 type(a) 	 	# <class 'int'>
 ```
 
+##### `range()`
+
+```python
+range(101) # 0-100
+range(1, 100) # 1-99
+range(1, 100, 2) # 1-99, +2 every step
+```
+
 ##### type casting:
 
 ```python
@@ -157,18 +140,6 @@ str(x)
 chr(x) 		# int -> char [16846 -> 䇎][10 -> '\n']
 ord(x)		# char -> int reverses chr()
 ```
-
-##### `range()`
-
-```python
-range(101) # 0-100
-range(1, 100) # 1-99
-range(1, 100, 2) # 1-99, +2 every step
-```
-
-##### Generators and `yield`
-
-
 
 ---
 
@@ -225,6 +196,8 @@ def my_function(a=0): #if not given, a is 0 by default
   return a
 ```
 
+---
+
 ### Python Examples
 
 ##### First n Fibonacci numbers:
@@ -259,6 +232,42 @@ while len(l) < 20:
     if is_prime(c):
         l.append(c)
     c = c + 1
-    
+
 print(l)
+```
+
+---
+
+### Libraries
+
+- `turtle`: draw like a turtle!
+
+```python
+import turtle
+turtle.pensize(4)
+turtle.pencolor('green')
+
+turtle.forward(100) # draw 100 px
+turtle.right(90)    # turn 90 deg right
+
+turtle.mainloop()   # handle other events
+```
+
+- `random`: generate a random number
+
+```python
+import random
+
+random_number = random.randint(1, 100) # 1-100
+```
+
+#### Importing stuff
+
+```python
+import functions
+a = functions.square(2)
+
+from functions import absolute
+a = absolute(-4)
+
 ```
