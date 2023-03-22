@@ -28,8 +28,14 @@ l = sorted(list1, key=len)
 ```
 
 ### Tuple
+Non mutable list.
 
 ```python
+t = ("harry", "ron", "hermione")
+
+len(t) # 3
+t[1] # "ron"
+t.append("draco") # error
 
 ```
 
@@ -152,8 +158,6 @@ if __name__ == '__main__':
   print("I'm actually executing now")
 ```
 
-
-
 ---
 
 ### Conditionals and loops
@@ -195,6 +199,52 @@ def my_function(a=0): #if not given, a is 0 by default
   a = a + 12345
   return a
 ```
+
+---
+
+## Object-oriented python
+Datastructure with properties and methods.
+
+### `class`
+- All methods of classes have `self` as an argument.
+```python
+class Point():
+  def __init__(self, x, y): # called every time I create a Point
+    self.x = x;
+    self.y = y;
+    
+p = Point(2, 8)
+print(p.x) # 2
+print(p.y) # 8
+```
+```python
+class Flight():
+  def __init__(self, capacity):
+    self.capacity = capacity
+    self.passengers = []
+
+  def add_passenger(self, name):
+    if not self.open_seats():
+      return False
+    self.passengers.append(name)
+    return True
+
+  def open_seats(self):
+    return self.capacity - len(self.passengers)
+
+flight = Flight(3)
+
+people = ["Harry", "Ron", "Hermione", "Ginny"]
+for person in people:
+  if flight.add_passenger(person):
+    print(f"Added {person} to flight successfully")
+  else:
+    print(f"No available seats for {person}")
+```
+
+---
+
+## Decorators
 
 ---
 
