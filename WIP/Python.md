@@ -1,12 +1,12 @@
 # Python
 
----
-
 Remember:
 
 > Python is very much space sensitive. **USE THE FREAKING TAB**
 
 ---
+
+## Data types
 
 ### Lists
 
@@ -27,8 +27,8 @@ l = sorted(list1, key=len)
 # Slicing works here too!
 ```
 
-### Tuple
-Non mutable list.
+### Tuples
+Non mutable lists.
 
 ```python
 t = ("harry", "ron", "hermione")
@@ -41,9 +41,220 @@ t.append("draco") # error
 
 ---
 
-### Operations
+## Base functions
 
-#### Strings
+### `input()`
+
+```python
+a = int(input('a = '))
+```
+
+### `print()`
+
+```python
+print('%d / %d = %f' % (a, b, a / b))
+print('%d %% %d = %d' % (a, b, a % b))
+print('{0} * {1} = {2}'.format(a, b, a * b))
+print(f'{a} * {b} = {a * b}')
+```
+
+### `type()`
+
+```python
+a = 13
+type(a) 	 	# <class 'int'>
+```
+
+### `range()`
+
+```python
+range(101) # 0-100
+range(1, 100) # 1-99
+range(1, 100, 2) # 1-99, +2 every step
+```
+
+### type casting:
+
+```python
+int(x)
+float(x)
+str(x)
+chr(x) 		# int -> char [16846 -> 䇎][10 -> '\n']
+ord(x)		# char -> int reverses chr()
+```
+
+---
+
+## Conditionals and loops
+
+### `if..elif..else..`
+
+```python
+if username == 'admin' and password == '666999':
+    print('oooook!')
+elif username == 'user'
+    print('oks')
+else:
+    print('noooop')
+```
+
+### loops
+
+#### `for..in..`
+
+```python
+sum = 0
+for x in range(101): # 0-100
+    sum += x
+print(sum) # prints the sum of the first 100 integers
+```
+
+#### `while`
+
+```python
+while 1:
+  doSomething()
+  break
+```
+
+---
+
+## Custom functions
+
+```python
+def my_function(a=0): #if not given, a is 0 by default
+  a = a + 12345
+  return a
+```
+
+### Lambda
+
+```python
+people = [
+  {"name": "Harry", "house": "Gryffindor"},
+  {"name": "Cho", "house": "Ravenclaw"},
+  {"name": "Draco", "house": "Slytherin"}
+]
+
+prople.sort() # error '<' not supported in sort()
+
+def f(person):
+  return person["name"]
+
+people.sort(key=f) # cho - draco - harry
+# lambda person: person["name"] is the lambda function
+people.sort(key=lambda person: person["name"]) # cho - draco - harry
+
+```
+
+### Decorators
+A function that takes a function as input, and returns a modified version of that function.
+
+```python
+def announce(f):
+  def wrapper():
+    print("About to run the function...")
+    f()
+    print("Done with the function.")
+  return wrapper
+  
+@announce
+def hello():
+  print("Hello, world!")
+
+hello()
+# About to run the function...
+# Hello, world!
+# Done with the function.
+```
+
+---
+
+## Object-oriented python
+
+### `class`
+Datastructure with properties and methods.
+- All methods of classes have `self` as an argument.
+```python
+class Point():
+  def __init__(self, x, y): # called every time I create a Point
+    self.x = x;
+    self.y = y;
+    
+p = Point(2, 8)
+print(p.x) # 2
+print(p.y) # 8
+```
+```python
+class Flight():
+  def __init__(self, capacity):
+    self.capacity = capacity
+    self.passengers = []
+
+  def add_passenger(self, name):
+    if not self.open_seats():
+      return False
+    self.passengers.append(name)
+    return True
+
+  def open_seats(self):
+    return self.capacity - len(self.passengers)
+
+flight = Flight(3)
+
+people = ["Harry", "Ron", "Hermione", "Ginny"]
+for person in people:
+  if flight.add_passenger(person):
+    print(f"Added {person} to flight successfully")
+  else:
+    print(f"No available seats for {person}")
+```
+
+---
+
+## Exceptions
+
+```python
+import sys
+
+x = int(input("x: "))
+y = int(input("y: "))
+
+result = x / y;
+print(f"{x} / {y} = {result}")
+# if y = 0 -> ZeroDivisionError
+# if x or y is not int -> ValueError
+
+try:
+  x = int(input("x: "))
+  y = int(input("y: "))
+except ValueError:
+  print("Error: Invalid input.")
+  sys.exit(1)
+
+try:
+  result = x / y
+except ZeroDivisionError:
+  print("Error: Cannot divide by 0.")
+  sys.exit(1)
+```
+
+---
+
+## Special variables
+
+`__name__`
+
+```python
+if __name__ == '__main__':
+  print("I'm actually executing now")
+```
+
+---
+
+## Operations
+
+### Strings
 
 ```python
 s1 = 'hello '
@@ -84,7 +295,7 @@ print(s.center(20, '*')) # ***hello, world!****
 print(s.rjust(20, '-')) # -------hello, world!
 ```
 
-#### Math
+### Math
 
 ```python
 a = 321
@@ -105,220 +316,9 @@ print(a // 100) #3 third number and first
 
 ---
 
-### Base functions
+## Python Examples
 
-##### `input()`
-
-```python
-a = int(input('a = '))
-```
-
-##### `print()`
-
-```python
-print('%d / %d = %f' % (a, b, a / b))
-print('%d %% %d = %d' % (a, b, a % b))
-print('{0} * {1} = {2}'.format(a, b, a * b))
-print(f'{a} * {b} = {a * b}')
-```
-
-##### `type()`
-
-```python
-a = 13
-type(a) 	 	# <class 'int'>
-```
-
-##### `range()`
-
-```python
-range(101) # 0-100
-range(1, 100) # 1-99
-range(1, 100, 2) # 1-99, +2 every step
-```
-
-##### type casting:
-
-```python
-int(x)
-float(x)
-str(x)
-chr(x) 		# int -> char [16846 -> 䇎][10 -> '\n']
-ord(x)		# char -> int reverses chr()
-```
-
----
-
-### Base variables
-
-`__name__`
-
-```python
-if __name__ == '__main__':
-  print("I'm actually executing now")
-```
-
----
-
-### Conditionals and loops
-
-##### `if..elif..else..`
-
-```python
-if username == 'admin' and password == '666999':
-    print('oooook!')
-elif username == 'user'
-    print('oks')
-else:
-    print('noooop')
-```
-
-##### loops
-
-###### `for..in..`
-
-```python
-sum = 0
-for x in range(101): # 0-100
-    sum += x
-print(sum) # prints the sum of the first 100 integers
-```
-
-`while`
-
-```python
-while 1:
-  doSomething()
-  break
-```
-
-## Custom functions
-
-```python
-def my_function(a=0): #if not given, a is 0 by default
-  a = a + 12345
-  return a
-```
-
-### lambda
-
-```python
-people = [
-  {"name": "Harry", "house": "Gryffindor"},
-  {"name": "Cho", "house": "Ravenclaw"},
-  {"name": "Draco", "house": "Slytherin"}
-]
-
-prople.sort() # error '<' not supported in sort()
-
-def f(person):
-  return person["name"]
-
-people.sort(key=f) # cho - draco - harry
-# lambda person: person["name"] is the lambda function
-people.sort(key=lambda person: person["name"]) # cho - draco - harry
-
-```
-
----
-
-## Object-oriented python
-Datastructure with properties and methods.
-
-### `class`
-- All methods of classes have `self` as an argument.
-```python
-class Point():
-  def __init__(self, x, y): # called every time I create a Point
-    self.x = x;
-    self.y = y;
-    
-p = Point(2, 8)
-print(p.x) # 2
-print(p.y) # 8
-```
-```python
-class Flight():
-  def __init__(self, capacity):
-    self.capacity = capacity
-    self.passengers = []
-
-  def add_passenger(self, name):
-    if not self.open_seats():
-      return False
-    self.passengers.append(name)
-    return True
-
-  def open_seats(self):
-    return self.capacity - len(self.passengers)
-
-flight = Flight(3)
-
-people = ["Harry", "Ron", "Hermione", "Ginny"]
-for person in people:
-  if flight.add_passenger(person):
-    print(f"Added {person} to flight successfully")
-  else:
-    print(f"No available seats for {person}")
-```
-
----
-
-## Decorators
-A function that takes a function as input, and returns a modified version of that function.
-
-```python
-def announce(f):
-  def wrapper():
-    print("About to run the function...")
-    f()
-    print("Done with the function.")
-  return wrapper
-  
-@announce
-def hello():
-  print("Hello, world!")
-
-hello()
-# About to run the function...
-# Hello, world!
-# Done with the function.
-```
-
----
-
-### Exceptions
-
-```python
-import sys
-
-x = int(input("x: "))
-y = int(input("y: "))
-
-result = x / y;
-print(f"{x} / {y} = {result}")
-# if y = 0 -> ZeroDivisionError
-# if x or y is not int -> ValueError
-
-try:
-  x = int(input("x: "))
-  y = int(input("y: "))
-except ValueError:
-  print("Error: Invalid input.")
-  sys.exit(1)
-
-try:
-  result = x / y
-except ZeroDivisionError:
-  print("Error: Cannot divide by 0.")
-  sys.exit(1)
-```
-
----
-
-### Python Examples
-
-##### First n Fibonacci numbers:
+### First n Fibonacci numbers:
 
 ```python
 n = 20
@@ -332,7 +332,7 @@ while len(l) < 20:			# find first 20 fibonacci numbers
 print(l)					# l is and array of first 20 fibonacci numbers
 ```
 
-##### First n prime numbers:
+### First n prime numbers:
 
 ```python
 n = 20
@@ -356,9 +356,9 @@ print(l)
 
 ---
 
-### Libraries
+## Libraries
 
-- `turtle`: draw like a turtle!
+### `turtle`: draw like a turtle!
 
 ```python
 import turtle
@@ -371,7 +371,7 @@ turtle.right(90)    # turn 90 deg right
 turtle.mainloop()   # handle other events
 ```
 
-- `random`: generate a random number
+### `random`: generate a random number
 
 ```python
 import random
@@ -379,7 +379,9 @@ import random
 random_number = random.randint(1, 100) # 1-100
 ```
 
-#### Importing stuff
+---
+
+## Importing stuff
 
 ```python
 import functions
