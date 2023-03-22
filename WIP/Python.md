@@ -192,12 +192,32 @@ while 1:
   break
 ```
 
-##### Custom function
+## Custom functions
 
 ```python
 def my_function(a=0): #if not given, a is 0 by default
   a = a + 12345
   return a
+```
+
+### lambda
+
+```python
+people = [
+  {"name": "Harry", "house": "Gryffindor"},
+  {"name": "Cho", "house": "Ravenclaw"},
+  {"name": "Draco", "house": "Slytherin"}
+]
+
+prople.sort() # error '<' not supported in sort()
+
+def f(person):
+  return person["name"]
+
+people.sort(key=f) # cho - draco - harry
+# lambda person: person["name"] is the lambda function
+people.sort(key=lambda person: person["name"]) # cho - draco - harry
+
 ```
 
 ---
@@ -245,6 +265,54 @@ for person in people:
 ---
 
 ## Decorators
+A function that takes a function as input, and returns a modified version of that function.
+
+```python
+def announce(f):
+  def wrapper():
+    print("About to run the function...")
+    f()
+    print("Done with the function.")
+  return wrapper
+  
+@announce
+def hello():
+  print("Hello, world!")
+
+hello()
+# About to run the function...
+# Hello, world!
+# Done with the function.
+```
+
+---
+
+### Exceptions
+
+```python
+import sys
+
+x = int(input("x: "))
+y = int(input("y: "))
+
+result = x / y;
+print(f"{x} / {y} = {result}")
+# if y = 0 -> ZeroDivisionError
+# if x or y is not int -> ValueError
+
+try:
+  x = int(input("x: "))
+  y = int(input("y: "))
+except ValueError:
+  print("Error: Invalid input.")
+  sys.exit(1)
+
+try:
+  result = x / y
+except ZeroDivisionError:
+  print("Error: Cannot divide by 0.")
+  sys.exit(1)
+```
 
 ---
 
