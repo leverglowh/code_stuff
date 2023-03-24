@@ -1,41 +1,44 @@
-- [Python](#python)
-  - [Data types](#data-types)
-    - [Lists](#lists)
-    - [Tuples](#tuples)
-  - [Base functions](#base-functions)
-    - [`input()`](#input)
-    - [`print()`](#print)
-    - [`type()`](#type)
-    - [`range()`](#range)
-    - [type casting:](#type-casting)
-  - [Conditionals and loops](#conditionals-and-loops)
-    - [`if..elif..else..`](#ifelifelse)
-    - [loops](#loops)
-      - [`for..in..`](#forin)
-      - [`while`](#while)
-  - [Custom functions](#custom-functions)
-    - [Lambda](#lambda)
-    - [Decorators](#decorators)
-  - [Object-oriented python](#object-oriented-python)
-    - [`class`](#class)
-  - [Exceptions](#exceptions)
-  - [Special variables](#special-variables)
-  - [Operations](#operations)
-    - [Strings](#strings)
-    - [Math](#math)
-  - [Python Examples](#python-examples)
-    - [First n Fibonacci numbers:](#first-n-fibonacci-numbers)
-    - [First n prime numbers:](#first-n-prime-numbers)
-  - [Libraries](#libraries)
-    - [`turtle`: draw like a turtle!](#turtle-draw-like-a-turtle)
-    - [`random`: generate a random number](#random-generate-a-random-number)
-  - [Importing stuff](#importing-stuff)
-
 # Python
 
 Remember:
 
 > Python is very much space sensitive. **USE THE FREAKING TAB**
+
+---
+
+### Table of Contents
+
+- [Data types](#data-types)
+  - [Lists](#lists)
+  - [Tuples](#tuples)
+- [Base functions](#base-functions)
+  - [`input()`](#input)
+  - [`print()`](#print)
+  - [`type()`](#type)
+  - [`range()`](#range)
+  - [type casting:](#type-casting)
+- [Conditionals and loops](#conditionals-and-loops)
+  - [`if..elif..else..`](#ifelifelse)
+  - [loops](#loops)
+    - [`for..in..`](#forin)
+    - [`while`](#while)
+- [Custom functions](#custom-functions)
+  - [Lambda](#lambda)
+  - [Decorators](#decorators)
+- [Object-oriented python](#object-oriented-python)
+  - [`class`](#class)
+- [Exceptions](#exceptions)
+- [Special variables](#special-variables)
+- [Operations](#operations)
+  - [Strings](#strings)
+  - [Math](#math)
+- [Python Examples](#python-examples)
+  - [First n Fibonacci numbers:](#first-n-fibonacci-numbers)
+  - [First n prime numbers:](#first-n-prime-numbers)
+- [Libraries](#libraries)
+  - [`turtle`: draw like a turtle!](#turtle-draw-like-a-turtle)
+  - [`random`: generate a random number](#random-generate-a-random-number)
+- [Importing stuff](#importing-stuff)
 
 ---
 
@@ -69,7 +72,6 @@ t = ("harry", "ron", "hermione")
 len(t) # 3
 t[1] # "ron"
 t.append("draco") # error
-
 ```
 
 ---
@@ -177,7 +179,6 @@ def f(person):
 people.sort(key=f) # cho - draco - harry
 # lambda person: person["name"] is the lambda function
 people.sort(key=lambda person: person["name"]) # cho - draco - harry
-
 ```
 
 ### Decorators
@@ -422,5 +423,4 @@ a = functions.square(2)
 
 from functions import absolute
 a = absolute(-4)
-
 ```

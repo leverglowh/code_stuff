@@ -1,22 +1,27 @@
-- [Django](#django)
-  - [New project](#new-project)
-    - [Applications](#applications)
-      - [Create new application](#create-new-application)
-      - [Install application](#install-application)
-      - [`views.py`](#viewspy)
-        - [Redirect to other paths](#redirect-to-other-paths)
-      - [`urls.py`](#urlspy)
-      - [Templates](#templates)
-        - [Forms](#forms)
-      - [Static files](#static-files)
-      - [Template inheritance](#template-inheritance)
-  - [HTTP](#http)
-    - [Requests](#requests)
-    - [Responses](#responses)
-      - [Status Codes](#status-codes)
-
 # Django
 Python web framework, generating html/css from python.
+
+---
+
+### Table of Contents
+
+- [New project](#new-project)
+- [Applications](#applications)
+  - [Create new application](#create-new-application)
+  - [Install application](#install-application)
+  - [`views.py`](#viewspy)
+    - [Redirect to other paths](#redirect-to-other-paths)
+  - [`urls.py`](#urlspy)
+  - [Templates](#templates)
+    - [Forms](#forms)
+  - [Static files](#static-files)
+  - [Template inheritance](#template-inheritance)
+- [HTTP](#http)
+  - [Requests](#requests)
+  - [Responses](#responses)
+    - [Status Codes](#status-codes)
+
+---
 
 ## New project
 ```
@@ -25,16 +30,18 @@ cd PROJECT_NAME
 python3 manage.py runserver
 ```
 
-### Applications
+---
+
+## Applications
 A Django project can have multiple applications.
-#### Create new application
+### Create new application
 ```
 python3 manage.py startapp APP_NAME
 ```
-#### Install application
+### Install application
 Add `APP_NAME` to `INSTALLED_APPS` in `settings.py`.
 
-#### `views.py`
+### `views.py`
 ```python
 from django.http import HttpResponse # important!
 from django.shortcuts import render
@@ -50,7 +57,7 @@ def greet(request, name):
     })
 ```
 
-##### Redirect to other paths
+#### Redirect to other paths
 ```python
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -59,7 +66,7 @@ def i_redirect(request):
     return HttpResponseRedirect(reverse("tasks:index"))
 ```
 
-#### `urls.py`
+### `urls.py`
 ```python
 from django.urls import path
 from . import views
@@ -80,7 +87,7 @@ urlpatterns = [
 ]
 ```
 
-#### Templates
+### Templates
 Best practice: always have a template directory like: `APP_NAME/templates/APP_NAME/`.
 ```django
 <!DOCTYPE html>
@@ -121,7 +128,7 @@ Best practice: always have a template directory like: `APP_NAME/templates/APP_NA
 </html>
 ```
 
-##### Forms
+#### Forms
 Django has built in form capabilities, with validation features.
 ```python
 # views.py
@@ -155,7 +162,7 @@ def add(request):
 ```
 
 
-#### Static files
+### Static files
 Best practice: always have a static directory like: `APP_NAME/static/APP_NAME`.
 ```django
 {% load static %} <!-- load static files, like css -->
@@ -180,7 +187,7 @@ Best practice: always have a static directory like: `APP_NAME/static/APP_NAME`.
 {% endblock %}
 ```
 
-#### Template inheritance
+### Template inheritance
 
 ```django
 <!DOCTYPE html>
@@ -196,6 +203,7 @@ Best practice: always have a static directory like: `APP_NAME/static/APP_NAME`.
 </html>
 ```
 
+---
 
 ## HTTP
 
