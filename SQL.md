@@ -7,9 +7,9 @@
 #### Table of Contents
 
 - [Table managing](#table-managing)
-  - [Type constrains](#type-constrains)
-- [Queries](#query)
-  - [`WHERE`](#where-operators)
+  - [Type constraints](#type-constraints)
+- [SELECT Query](#select-query)
+  - [`WHERE` operators](#where-operators)
   - [`ORDER BY`](#order-by)
   - [`LIMIT`](#limit)
   - [`CASE`](#case)
@@ -17,7 +17,17 @@
   - [Computations](#computations)
   - [`GROUP BY`](#group-by)
   - [`HAVING`](#having)
-- [Postgres data types](#postgres-data-types)
+- [Multiple tables](#multiple-tables)
+  - [KEYS](#keys)
+  - [`..JOIN..ON..`](#joinon)
+  - [`..LEFT JOIN..ON..`](#left-joinon)
+  - [`CROSS JOIN`](#cross-join)
+  - [`UNION`](#union)
+  - [`WITH`](#with)
+- [Data types](#data-types)
+  - [SQLite data types](#sqlite-data-types)
+  - [MySQL data types](#mysql-data-types)
+  - [Postgres data types](#postgres-data-types)
 
 ---
 
@@ -25,9 +35,10 @@
 
 ```sql
 CREATE TABLE table_name (
-    column_1 data_type,
-    column_2 data_type,
-    column_3 data_type
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  column_1 data_type NOT NULL, 
+  column_2 data_type,
+  column_3 data_type
 );
 ```
 
@@ -36,7 +47,7 @@ INSERT INTO table_name (column_2, column_3)
 VALUES ('ciao', true);
 ```
 
-```plsql
+```sql
 ALTER TABLE table_name 
 ADD COLUMN column_4 TEXT;
 ```
@@ -55,37 +66,38 @@ WHERE column_3 IS NULL;
 ##### Type constraints
 
 - `PRIMARY KEY`
+- `CHECK`
 - `UNIQUE`
 - `NOT NULL`
 - `DEFAULT 'Default value'`
 
 ---
 
-### Query
+### SELECT Query
 
 ```sql
 SELECT * FROM users;
-/* Show everything from the table */
+-- Show everything from the table
 ```
 
 ```sql
 SELECT column_1, column_3 FROM table_name;
-/* Show only column 1 and 3 of the table */
+-- Show only column 1 and 3 of the table
 ```
 
 ```sql
 SELECT column_1 AS 'alternate_column_name' FROM table_name; 
-/* Rename column 1 only in the results */
+-- Rename column 1 only in the results
 ```
 
 ```sql
 SELECT DISTINCT column_2, column_1 FROM table_name;
-/* Do not show duplicates of the pair */
+-- Do not show duplicates of the pair
 ```
 
 ```sql
 SELECT column_1, column_2 FROM table_name WHERE column_3 = true;
-/* Show only column 1 and 2, where 3 is true */
+-- Show only column 1 and 2, where 3 is true
 ```
 
 ##### `WHERE` operators
@@ -123,7 +135,8 @@ SELECT * FROM table_name ORDER BY column_1 ASC;
 ##### `LIMIT`
 
 ```sql
-SELECT * FROM table_name LIMIT 10; /* Show only 10 rows */
+SELECT * FROM table_name LIMIT 10;
+-- Show only 10 rows
 ```
 
 ##### `CASE`
@@ -138,7 +151,7 @@ SELECT column_2,
   	ELSE 'kid'
   END AS 'Role'
  FROM table_name;
- /* The second column (Role) is either 'adult' or 'teenager' or 'kid' */
+-- The second column (Role) is either 'adult' or 'teenager' or 'kid'
 ```
 
 ---
@@ -150,54 +163,55 @@ SELECT column_2,
 - `COUNT()`: n -> 1
 
 ```sql
-SELECT COUNT(*) FROM table_name; /* Counts how many rows are there */
+SELECT COUNT(*) FROM table_name;
+-- Counts how many rows are there
 ```
 
 - `SUM()`: n -> 1
 
 ```sql
 SELECT SUM(column_2) FROM table_name;
-/* Shows 1 value: sum of all column_2 values */
+-- Shows 1 value: sum of all column_2 values
 ```
 
 - `MAX()`/`MIN()`: n -> 1
 
 ```sql
 SELECT MAX(column_2) FROM table_name;
-/* Shows 1 value: the biggest value in the column_2 */
+-- Shows 1 value: the biggest value in the column_2
 ```
 
 ```sql
 SELECT column_1 FROM table_name 
 WHERE column_2 = (SELECT MAX(column_2) FROM table_name);
-/* Shows the column 1 value that has the maximum column 2 value */
+-- Shows the column 1 value that has the maximum column 2 value
 ```
 
 - `AVG()`: n -> 1
 
 ```sql
 SELECT AVG(column_2) FROM table_name;
-/* Shows 1 value: the average value of the column 2 */
+-- Shows 1 value: the average value of the column 2
 ```
 
 - `ROUND()`: n -> n
 
 ```sql
 SELECT column_1, ROUND(column_2, 2) FROM table_name;
-/* Shows 2 columns, the second column values are rounded to 2 decimal places */
+-- Shows 2 columns, the second column values are rounded to 2 decimal places
 ```
 
 ##### `GROUP BY`
 
 ```sql
 SELECT column_1, COUNT(*) FROM table_name GROUP BY column_1;
-/* Returns 2 columns: first one shows distinct column 1 values, the second one counts how many rows are there for every distinct column 1 value (how many times the value is repeated) */
+-- Returns 2 columns: first one shows distinct column 1 values, the second one counts how many rows are there for every distinct column 1 value (how many times the value is repeated)
 ```
 
 ```sql
 SELECT column_1, column_2, COUNT(*) FROM table_name
 GROUP BY 2 ORDER BY 1,2;
-/* Notice that I can reference columns by their position in the query */
+-- Notice that I can reference columns by their position in the query
 ```
 
 ##### `HAVING`
@@ -304,7 +318,30 @@ ON res_column = table_2.column;
 
 ---
 
-##### Postgres data types
+## Data types
+
+Each SQL database has its own data types.
+
+### SQLite data types
+
+- `TEXT`
+- `NUMERIC`
+- `INTEGER`
+- `REAL`: real number
+- `BLOB`: binary data
+
+### MySQL data types
+
+- `CHAR(n)`
+- `VARCHAR(n)`
+- `SMALLINT`
+- `INT`
+- `BIGINT`
+- `FLOAT`
+- `DOUBLE`
+- ...
+
+### Postgres data types
 
 - `boolean`(`bool`)
 - `char(n)`: fixed-length string with space padded
@@ -324,4 +361,15 @@ ON res_column = table_2.column;
 - `INTERVAL`: periods of time
 - array: `serial number INT[]`
 - `JSON`: plain JSON, must be parsed for each processing
-- `JSONB`: *JSON* in binary, faster to process but slower to insert, supports <u>indexing</u>.
+- `JSONB`: *JSON* in binary, faster to process but slower to insert, supports <u>indexing</u>
+- ...
+
+## SQLite
+```
+touch mydb.sql
+sqlite3 mydb.sql
+// SQL STUFF HERE
+.tables
+.mode columns
+.headers yes
+```
