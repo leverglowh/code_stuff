@@ -5,7 +5,9 @@ Python web framework, generating html/css from python.
 
 ### Table of Contents
 
-- [New project](#new-project)
+- [Project](#project)
+  - [New project](#new-project)
+  - [Session table](#session-table)
 - [Applications](#applications)
   - [Create new application](#create-new-application)
   - [Install application](#install-application)
@@ -23,11 +25,19 @@ Python web framework, generating html/css from python.
 
 ---
 
-## New project
+## Project
+
+### New project
 ```
 django-admin startproject PROJECT_NAME
 cd PROJECT_NAME
 python3 manage.py runserver
+```
+
+### Session table
+In order to create django session tables, we have to:
+```
+python3 manage.py migrate
 ```
 
 ---
@@ -49,6 +59,8 @@ from django.shortcuts import render
 # Create your views here.
 # Every view is a custom function.
 def index(request):
+    # Session info
+    sessionId = request.session.session_key
     return HttpResponse("Hello, world!")
 
 def greet(request, name):
@@ -109,6 +121,8 @@ Best practice: always have a template directory like: `APP_NAME/templates/APP_NA
         <!-- looping through list -->
         {% for task in tasks %}
             <div>{{ task }}</div>
+        {% empty %}
+            <li>No tasks.</li>
         {% endfor %}
 
         <!-- links inside project, where 'add' is the name of path -->
@@ -116,14 +130,6 @@ Best practice: always have a template directory like: `APP_NAME/templates/APP_NA
 
         <!-- link with app name, useful for colliding path names -->
         <a href="{% url 'hello:index' %}">Hello</a>
-
-        <!-- form: to 'add' view, with method POST -->
-        <form action="{% url 'tasks:add' %}" method="post">
-            <!-- protection from CSRF: cross site request forge -->
-            {% csrf_token %} 
-            <input type="text" name="task">
-            <input type="submit">
-        </form>
     </body>
 </html>
 ```
