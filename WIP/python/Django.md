@@ -75,7 +75,9 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 def i_redirect(request):
-    return HttpResponseRedirect(reverse("tasks:index"))
+    my_name = 'hello'
+    # Omit `kwargs` if no arguments needed
+    return HttpResponseRedirect(reverse("tasks:index", kwargs={"name": my_name}))
 ```
 
 ### `urls.py`
