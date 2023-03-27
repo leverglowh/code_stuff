@@ -17,6 +17,7 @@
   - [Computations](#computations)
   - [`GROUP BY`](#group-by)
   - [`HAVING`](#having)
+- [Index](#index)
 - [Multiple tables](#multiple-tables)
   - [KEYS](#keys)
   - [`..JOIN..ON..`](#joinon)
@@ -222,6 +223,14 @@ Used to filter aggregated properties.
 SELECT column_1, column_2, COUNT(column_3) FROM table_name
 GROUP BY 1, 2
 HAVING COUNT(column_3) > 5;
+```
+
+---
+
+## Index
+Index content for fast queries.
+```sql
+CREATE INDEX name_index on passengers (lastname)
 ```
 
 ---
