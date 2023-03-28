@@ -8,12 +8,18 @@ Python web framework, generating html/css from python.
 - [Project](#project)
   - [New project](#new-project)
   - [Session table](#session-table)
+  - [Python shell](#python-shell)
+    - [Manipulate database](#manipulate-database)
 - [Applications](#applications)
+  - [Admin APP](#admin-app)
+    - [Create superuser](#create-superuser)
+    - [Register models in the admin app](#register-models-in-the-admin-app)
   - [Create new application](#create-new-application)
   - [Install application](#install-application)
   - [`views.py`](#viewspy)
     - [Redirect to other paths](#redirect-to-other-paths)
   - [`urls.py`](#urlspy)
+  - [`models.py`](#modelspy)
   - [Templates](#templates)
     - [Forms](#forms)
   - [Static files](#static-files)
@@ -40,10 +46,79 @@ In order to create django session tables, we have to:
 python3 manage.py migrate
 ```
 
+### Python shell
+To open Django's shell where I can write python commands on this project:
+```
+python3 manage.py shell
+```
+
+#### Manipulate database
+```
+python3 manage.py shell
+```
+```python
+from flights.models import *
+f = Flight(origin="New York", destination="London", duration=415)
+f.save() # I have now created a row in the Flight table.
+
+# Get rows
+flights = Flight.objects.all()
+flight = flights.first()
+
+# Filter
+new_york_airports = Airport.objects.filter(city="New York")
+
+# All passengers that are not on the `flight`
+non_passengers = Passenger.objects.exclude(flights=flight).all()
+
+# where passengers is a related name in a many to many relationship
+passengers = flight.passengers.all()
+
+# Get the one row, throws error if more than one are found
+the_ny_airport = Airport.objects.get(city="New York")
+the_london_airport = Airport.objects.get(city="London")
+
+# Add row with references to foreign table rows
+f1 = Flight(origin=the_ny_airport, destination=the_london_airport, duration=435)
+
+# Delete row
+flight.delete()
+```
+
 ---
 
 ## Applications
 A Django project can have multiple applications.
+
+### Admin APP
+
+#### Create superuser
+```
+python3 manage.py createsuperuser
+<!-- enter username -->
+<!-- enter email -->
+<!-- enter password, twice -->
+```
+
+#### Register models in the admin app
+```python
+# admin.py
+from django.contrib import admin
+
+from .models import Flight, Airport, Passenger
+
+# Register your models here.
+class FlightAdmin(admin.ModelAdmin):
+    list_display = ("id", "origin", "destination", "duration")
+
+class PassengerAdmin(admin.ModelAdmin):
+    filter_horizontal = ("flights",)
+
+admin.site.register(Airport)
+admin.site.register(Flight, FlightAdmin)
+admin.site.register(Passenger, PassengerAdmin)
+```
+
 ### Create new application
 ```
 python3 manage.py startapp APP_NAME
@@ -99,6 +174,51 @@ from django.urls import include, path
 urlpatterns = [
     path('hello/', include('hello.urls'))
 ]
+```
+
+### `models.py`
+In every application I can define a number of data models.
+```python
+from django.db import models
+
+# Create your models here.
+class Airport(models.Model):
+    code = models.CharField(max_length=3)
+    city = models.CharField(max_length=64)
+
+    def __str__(self):
+        return f"{self.city} ({self.code})"
+
+
+class Flight(models.Model):
+    origin = models.ForeignKey(Airport, on_delete=models.CASCADE, related_name="departures")
+    destination = models.ForeignKey(Airport, on_delete=models.CASCADE, related_name="arrivals")
+    duration = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.id}: {self.origin} to {self.destination}."
+
+class Passenger(models.Model):
+    first = models.CharField(max_length=64)
+    last = models.CharField(max_length=64)
+    flights = models.ManyToManyField(Flight, blank=True, related_name="passengers")
+
+    def __str__(self):
+        return f"{self.first} {self.last}"
+```
+For this data model to be included and processed by DB (migration), I have to type this command in terminal:
+```
+python3 manage.py makemigrations
+<!-- 
+Migrations for 'flights':
+  flights/migrations/0001_initial.py
+    - Create model Flight
+-->
+```
+
+To apply the migration:
+```
+python3 manage.py migrate
 ```
 
 ### Templates
