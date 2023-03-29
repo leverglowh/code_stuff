@@ -191,6 +191,8 @@ class Airport(models.Model):
 
 
 class Flight(models.Model):
+    # Airport 1 - N Flights
+    # Airport has many flights, a flight only has one origin airport.
     origin = models.ForeignKey(Airport, on_delete=models.CASCADE, related_name="departures")
     destination = models.ForeignKey(Airport, on_delete=models.CASCADE, related_name="arrivals")
     duration = models.IntegerField()
@@ -201,6 +203,8 @@ class Flight(models.Model):
 class Passenger(models.Model):
     first = models.CharField(max_length=64)
     last = models.CharField(max_length=64)
+    # Flights N - M Passengers
+    # Many to many
     flights = models.ManyToManyField(Flight, blank=True, related_name="passengers")
 
     def __str__(self):
