@@ -39,6 +39,8 @@ Remember:
   - [`turtle`: draw like a turtle!](#turtle-draw-like-a-turtle)
   - [`random`: generate a random number](#random-generate-a-random-number)
 - [Importing stuff](#importing-stuff)
+- [Testing](#testing)
+  - [`unittest`](#unittest)
 
 ---
 
@@ -423,4 +425,52 @@ a = functions.square(2)
 
 from functions import absolute
 a = absolute(-4)
+```
+
+---
+
+## Testing
+
+```python
+def square(x):
+  return x * x
+
+assert square(10) == 100 # if pass, nothing is printed
+assert square(10) == 101 # no pass: AssertError
+```
+```python
+import math
+def is_prime(n):
+  if n < 2:
+    return False
+  for i in range(2, int(math.sqrt(n))):
+    if n % i == 0:
+      return False
+  return True
+
+def test_prime(n, expected):
+  if is_prime(n) != expected:
+    print(f"Error on is_prime({n}), expected {expected}")
+```
+```shell
+test.sh
+python3 -c "from test import test_prime; test_prime(2, True)"
+python3 -c "from test import test_prime; test_prime(8, False)"
+```
+### `unittest`
+```python
+import unittest
+import is_prime
+
+class Tests(unittest.TestCase):
+  def test_1(self):
+    """Check that 1 is not prime."""
+    sef.assertFalse(is_prime(1))
+
+  def test_2(self):
+    """Check that 2 is prime."""
+    sef.assertTrue(is_prime(2))
+
+if __name__ == "__main__":
+  unittest.main()
 ```
